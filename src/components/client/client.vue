@@ -14,7 +14,7 @@
           <el-table-column prop="name" label="简称" width="180"></el-table-column>
           <el-table-column prop="address" label="联系人" width="180"></el-table-column>
           <el-table-column prop="date" label="有效期" width="180"></el-table-column>
-          <el-table-column prop="address" label="观察者" ></el-table-column>
+          <el-table-column prop="address" label="观察者"   width="180"></el-table-column>
         </el-table>
          <!--<el-pagination layout="prev, pager, next" :total="510" small></el-pagination>-->
     </div>
