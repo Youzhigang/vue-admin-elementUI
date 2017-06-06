@@ -7,7 +7,9 @@ import axios from 'axios'
 
 import store from './store/index'
 import { Breadcrumb, BreadcrumbItem,Form,FormItem, Pagination, Input, Button, Row, Col, Icon, Table,TableColumn,
-  Menu, MenuItem, Loading,
+  Menu, MenuItem, Radio,
+  RadioGroup,
+  Checkbox,CheckboxGroup,Loading,
   MessageBox,
   Message}
 from 'element-ui'
@@ -31,6 +33,8 @@ Vue.use(Row)
 Vue.use(Icon)
 Vue.use(Menu)
 Vue.use(MenuItem)
+Vue.use(Radio)
+Vue.use(RadioGroup)
 Vue.use(Table)
 Vue.use(TableColumn)
 

@@ -57,12 +57,14 @@
   height: 100%;
   .left{
     flex:0 200px;
+    min-width: 200px;
     // box-shadow: 1px 0px 1px 1px #283443;
   }
   .middle{
     flex: 1;
     margin-left: 5px;
     box-shadow: 1px 0px 1px 2px #283443;
+    position: relative;
     .fade-enter{
       opacity: 0;
     }
@@ -83,7 +85,8 @@
     //   opacity: 0
     // }
     .child-router {
-      // position: absolute;
+      position: absolute;
+      // height: 0;
       transition: all .5s cubic-bezier(.55,0,.1,1);
     }
     .slide-left-enter{
