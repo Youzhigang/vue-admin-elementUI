@@ -1,0 +1,162 @@
+<template>
+  <div class="home">
+    <!--<h1>home</h1>-->
+    <div class="panel">
+      <div class="panel-item panel-client" @click='goPage("/index/client")'>
+        <div class="number">1</div>
+        <div class="title">企业(客户)</div>
+      </div>
+      <div class="panel-item panel-question" @click='goPage("/index/question")'>
+        <div class="number">1</div>
+        <div class="title">问题</div>
+      </div>
+      <div class="panel-item panel-archive" @click='goPage("/index/archive")'>
+        <div class="number">1</div>
+        <div class="title">文档</div>
+      </div>
+      <div class="panel-item panel-system" @click='goPage("/index/system")'>
+        <div class="number">1</div>
+        <div class="title">系统管理</div>
+      </div>
+    </div>
+    <div class="list-group">
+      <div class="question-list">
+          <el-table :data="tableData" stripe>
+          <el-table-column prop="date" label="日期" width="180">
+          </el-table-column>
+          <el-table-column prop="name" label="姓名" width="180">
+          </el-table-column>
+          <el-table-column prop="address" label="地址">
+          </el-table-column>
+        </el-table>
+        <!--sticty footer-->
+         <el-pagination layout="prev, pager, next" :total="50" small></el-pagination>
+
+      </div>
+     <div class="archive-list">
+
+       <ul>
+          <li>1</li>
+          <li>2</li>
+          <li>3</li>
+          <li>4</li>
+          <li>5</li>
+          <li>6</li>
+          <li>7</li>
+          <li>8</li>
+          <li>9</li>
+          <li>10</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'home',
+    data() {
+      return {
+        tableData: [{
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1517 弄'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1519 弄'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1516 弄'
+        }]
+      }
+    },
+    methods: {
+      goPage(path) {
+        this.$router.push(path)
+      }
+    }
+  }
+
+</script>
+
+<style lang="scss" scoped>
+  .home {
+    width: 100%;
+    height: 100%;
+    margin: 10px 20px 5px 10px; // border: 1px solid black;
+    background-color: #fefefe;
+    display: flex; // align-items: center;
+    flex-direction: column;
+    .panel {
+      flex: 0 200px;
+      display: flex; // height: 300px;
+      box-sizing: border-box;
+      padding: 10px 20px;
+      margin-right: 10px;
+      &-item {
+        flex: 1;
+        position: relative;
+        margin-right: 30px;
+        border-radius: 2px;
+        &:hover{
+          cursor: pointer;
+        }
+      }
+      &:not(:last-child) {
+        margin-right: 0px;
+      }
+      &-client {
+        background-color: #dfa1ef;
+      }
+      &-question {
+        background-color: #ab4345;
+      }
+      &-archive {
+        background-color: #45acde;
+      }
+      &-system {
+        background-color: #a1ecfc;
+      }
+      .number {
+        font-size: 60px;
+        color: #ede;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        font-weight: 500;
+        transform: translate(-50%, -50%);
+      }
+      .title {
+        font-size: 14px;
+        position: absolute;
+        bottom: 5px;
+        right: 10px;
+        color: #ccc;
+        font-weight: 600;
+      }
+    }
+    .list-group {
+      flex: 1;
+       padding: 10px 20px;
+      margin-right: 10px;
+      display: flex;
+      width: 100%;
+      height: 100%;
+      .question-list {
+        width: 50%;
+        // flex: 1;
+      }
+      .archive-list {
+        width: 50%;
+        margin-left: 20px;
+      }
+    }
+  }
+
+</style>

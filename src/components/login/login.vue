@@ -56,9 +56,9 @@
           if (valid) {
             console.log('submit!');
             // this.$http('')  // 请求后台
-            console.log(this.$router.push('/index'));
+            this.$router.push('/index')
           } else {
-            console.log('error submit!!');
+            console.log('error submit!!')
             return false;
           }
         });

@@ -4,7 +4,8 @@
 
       <el-col>
         <div class="logo">
-          <img src="https://imgsa.baidu.com/baike/w%3D268/sign=f0e254ed6e224f4a5799741531f69044/37d3d539b6003af3789efeab362ac65c1138b6d0.jpg" alt="logo" width="150" height="150">
+          <img src="http://preview.quanjing.com/ibrm009/ibljoa00748302.jpg" alt="logo" width="100" height="100">
+
         </div>
         <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" theme="dark" :router='true'>
           <!--<el-submenu index="1">
@@ -22,11 +23,11 @@
               <el-menu-item index="1-4-1">选项1</el-menu-item>
             </el-submenu>
           </el-submenu>-->
-          <el-menu-item index="index/hello" ><i class="el-icon-menu"></i>首页</el-menu-item>
-          <el-menu-item index="1" ><i class="el-icon-menu"></i>客户</el-menu-item>
-          <el-menu-item index="2"><i class="el-icon-menu"></i>问题</el-menu-item>
-          <el-menu-item index="3"><i class="el-icon-menu"></i>档案</el-menu-item>
-          <el-menu-item index="4"><i class="el-icon-menu"></i>系统</el-menu-item>
+          <el-menu-item index="/index/" ><i class="el-icon-menu"></i>首页</el-menu-item>
+          <el-menu-item index="/index/client" ><i class="el-icon-menu"></i>客户</el-menu-item>
+          <el-menu-item index="/index/question"><i class="el-icon-menu"></i>问题</el-menu-item>
+          <el-menu-item index="/index/archive"><i class="el-icon-menu"></i>档案</el-menu-item>
+          <el-menu-item index="/index/system"><i class="el-icon-menu"></i>系统</el-menu-item>
         </el-menu>
       </el-col>
 
