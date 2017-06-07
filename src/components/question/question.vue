@@ -14,13 +14,16 @@
     </div>
     <!--</div>-->
    <div class="table-container">
-        <el-table :data="tableData" height="340" border stripe>
+        <el-table :data="tableData" height="340" border stripe >
           <el-table-column prop="name" label="客户" width="180"></el-table-column>
           <el-table-column prop="address" label="问题描述" width="180"></el-table-column>
           <el-table-column prop="date" label="提问时间" width="180"></el-table-column>
           <el-table-column prop="address" label="状态" ></el-table-column>
           <el-table-column prop="address" label="操作" />
         </el-table>
+    </div>
+    <div class="page-footer">
+        <el-pagination layout="prev, pager, next" :total="510" small></el-pagination>
     </div>
   </div>
 </template>
@@ -47,7 +50,10 @@ export default {
 <style lang="scss" scoped>
 .question {
     width: 100%;
+    height: calc(100vh - 80px);
     // height: 100%;
+    display: flex;
+    flex-direction: column;
     margin: 20px 20px 5px 20px; // border: 1px solid black;
     background-color: #fefefe;
     .top {
@@ -58,6 +64,7 @@ export default {
          }
     }
     .table-container {
+      flex:1;
       // max-width: 100%;
       // overflow: hidden;
       // overflow-x: hidden;

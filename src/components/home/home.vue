@@ -21,27 +21,23 @@
     </div>
     <div class="list-group">
       <div class="question-list">
-        <!--<el-table :data="tableData" stripe>
-          <el-table-column prop="date" label="日期" width="180">
-          </el-table-column>
-          <el-table-column prop="name" label="姓名" width="180">
-          </el-table-column>
-          <el-table-column prop="address" label="地址">
-          </el-table-column>
-        </el-table>-->
-        <!--sticty footer-->
-        <el-table :data="tableData" height="300" border style="width: 100%">
-          <el-table-column prop="date" label="日期" width="180">
-          </el-table-column>
-          <el-table-column prop="name" label="姓名" width="180">
-          </el-table-column>
-          <el-table-column prop="address" label="地址">
-          </el-table-column>
-        </el-table>
-        <el-pagination layout="prev, pager, next" :total="50" small></el-pagination>
+        <div class="question-table">
+          <el-table :data="tableData" height="300" border style="width: 100%">
+            <el-table-column prop="date" label="日期" width="180">
+            </el-table-column>
+            <el-table-column prop="name" label="姓名" width="180">
+            </el-table-column>
+            <el-table-column prop="address" label="地址">
+            </el-table-column>
+          </el-table>
+        </div>
+        <div class="page-footer">
+          <el-pagination layout="prev, pager, next" :total="50" small></el-pagination>
+        </div>
 
       </div>
       <div class="archive-list">
+        <div class="archive-table">
         <el-table :data="tableData" height="300" border style="width: 100%">
           <el-table-column prop="date" label="日期" width="180">
           </el-table-column>
@@ -50,7 +46,10 @@
           <el-table-column prop="address" label="地址">
           </el-table-column>
         </el-table>
-
+        </div>
+        <div class="page-footer">
+          <el-pagination layout="prev, pager, next" :total="50" small></el-pagination>
+        </div>
       </div>
     </div>
   </div>
@@ -91,8 +90,9 @@
 
 <style lang="scss" scoped>
   .home {
-    max-width: 100%;
-    height: 100%; // overflow: hidden;
+    width: 100%;
+    //height: 100%; // overflow: hidden;
+    height: calc(100% - 80px);
     margin: 10px 10px 5px 10px;
     // border: 1px solid black;
     background-color: #fefefe;
@@ -100,7 +100,7 @@
     flex-direction: column;
     .panel {
       flex: 0 200px;
-      min-width: 200px;
+      // min-width: 200px;
       display: flex; // height: 300px;
       box-sizing: border-box;
       padding: 10px 20px;
@@ -148,18 +148,38 @@
       }
     }
     .list-group {
-      flex: 1;
+      // flex: 1;
       padding: 10px 20px;
       margin-right: 10px;
       display: flex; // width: 100%;
-      height: 100%;
+      height: calc(100% - 80px);
       // border: 1px solid black;
       .question-list {
         width: 50%; // flex: 1;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        .question-table{
+          flex: 1;
+          height: 700px;;
+        }
+        .page-footer{
+
+        }
       }
       .archive-list {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
         width: 50%;
         margin-left: 20px;
+        .archive-table{
+          flex: 1;
+          height: 700px;;
+        }
+        .page-footer{
+
+        }
       }
     }
   }

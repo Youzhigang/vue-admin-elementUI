@@ -10,13 +10,15 @@
       <el-button :plain="true" >上传<i class="el-icon-upload el-icon--right"></i></el-button>
     </div>
     <div class="table-container">
-        <el-table :data="tableData" height="340" border stripe>
+        <el-table :data="tableData"  border stripe>
           <el-table-column prop="name" label="简称" width="180"></el-table-column>
           <el-table-column prop="address" label="联系人" width="180"></el-table-column>
           <el-table-column prop="date" label="有效期" width="180"></el-table-column>
-          <el-table-column prop="address" label="观察者"   width="180"></el-table-column>
+          <el-table-column prop="address" label="观察者"  ></el-table-column>
         </el-table>
-         <!--<el-pagination layout="prev, pager, next" :total="510" small></el-pagination>-->
+    </div>
+    <div class="page-footer">
+        <el-pagination layout="prev, pager, next" :total="510" small></el-pagination>
     </div>
   </div>
 </template>
@@ -52,10 +54,13 @@ export default {
 
 <style lang="scss" scoped>
  .client {
-    max-width: 100%;
-    // height: 100%;
+    width: 100%;
+    // height: calc(100% - 100px);
+    height: calc(100vh - 100px);
     margin: 20px 20px 5px 20px; // border: 1px solid black;
     background-color: #fefefe;
+    display: flex;
+    flex-direction: column;
     .top {
       font-size: 0px;
       button{
@@ -64,12 +69,17 @@ export default {
       }
     }
     .table-container {
+      flex:1;
+      // height: 100vh;
       // max-width: 100%;
       // overflow: hidden;
       // overflow-x: hidden;
       // padding: 20px 20px 0 0;
       margin: 20px 20px 0 0;
       // margin-right: 50px;
+    }
+    .page-footer{
+
     }
   }
 </style>

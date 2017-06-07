@@ -7,9 +7,9 @@ import axios from 'axios'
 
 import store from './store/index'
 import { Breadcrumb, BreadcrumbItem,Form,FormItem, Pagination, Input, Button, Row, Col, Icon, Table,TableColumn,
-  Menu, MenuItem, Radio,
+  Menu, MenuItem,Badge, Radio,
   RadioGroup,
-  Checkbox,CheckboxGroup,Loading,
+  Checkbox,CheckboxGroup,Loading, Notification,
   MessageBox,
   Message}
 from 'element-ui'
@@ -21,6 +21,7 @@ Vue.prototype.$http = Vue.prototype.$http || axios
 
 
 // Vue.use(ElementUI)
+Vue.use(Badge)
 Vue.use(Pagination)
 Vue.use(Input)
 Vue.use(Breadcrumb)

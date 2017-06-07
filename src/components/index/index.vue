@@ -36,15 +36,19 @@
     },
     created(){
       console.log(this.$route.name);
+
     },
     watch: {
       $route: function (to, from) {
-        // console.log('to', to);
-        // console.log('from', from);
+        console.log('to', to);
+        console.log('from', from);
         const toDepth = to.path.split('/').length
         const fromDepth = from.path.split('/').length
-        // this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+        this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
       }
+    },
+    methods: {
+
     }
   }
 
@@ -56,11 +60,15 @@
   display: flex;
   height: 100%;
   .left{
+    height: 100%;
     flex:0 200px;
     min-width: 200px;
     // box-shadow: 1px 0px 1px 1px #283443;
   }
   .middle{
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
     flex: 1;
     margin-left: 5px;
     box-shadow: 1px 0px 1px 2px #283443;
@@ -88,6 +96,13 @@
       position: absolute;
       // height: 0;
       transition: all .5s cubic-bezier(.55,0,.1,1);
+      &:after{
+        content: '*';
+        visibility: hidden;
+        display: block;
+        height: 0;
+        clear: both;
+      }
     }
     .slide-left-enter{
       opacity: 0;
