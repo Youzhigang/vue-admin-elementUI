@@ -7,11 +7,11 @@
         <div class="title">企业(客户)</div>
       </div>
       <div class="panel-item panel-question" @click='goPage("/index/question")'>
-        <div class="number">1</div>
+        <div class="number">7</div>
         <div class="title">问题</div>
       </div>
       <div class="panel-item panel-archive" @click='goPage("/index/archive")'>
-        <div class="number">1</div>
+        <div class="number">8</div>
         <div class="title">文档</div>
       </div>
       <div class="panel-item panel-system" @click='goPage("/index/system")'>
@@ -21,14 +21,14 @@
     </div>
     <div class="list-group">
       <div class="question-list">
+        <div class="title">问题列表</div>
         <div class="question-table">
-          <el-table :data="tableData" height="300" border style="width: 100%">
-            <el-table-column prop="date" label="日期" width="180">
+          <el-table :data="tableData"  border style="width: 95%" :show-header='false'>
+            <el-table-column prop="date" width='120' >
             </el-table-column>
-            <el-table-column prop="name" label="姓名" width="180">
+            <el-table-column prop="name" label="姓名">
             </el-table-column>
-            <el-table-column prop="address" label="地址">
-            </el-table-column>
+
           </el-table>
         </div>
         <div class="page-footer">
@@ -37,14 +37,14 @@
 
       </div>
       <div class="archive-list">
+        <div class="title">文档列表</div>
         <div class="archive-table">
-        <el-table :data="tableData" height="300" border style="width: 100%">
-          <el-table-column prop="date" label="日期" width="180">
+        <el-table :data="tableData"  border style="width: 95%" :show-header='false'>
+          <el-table-column prop="date" width='120' >
           </el-table-column>
-          <el-table-column prop="name" label="姓名" width="180">
+          <el-table-column prop="name" label="姓名">
           </el-table-column>
-          <el-table-column prop="address" label="地址">
-          </el-table-column>
+
         </el-table>
         </div>
         <div class="page-footer">
@@ -61,21 +61,29 @@
     data() {
       return {
         tableData: [{
-          date: '2016-05-02',
+          date: '大金空调',
           name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
+          address: '1518 弄'
         }, {
-          date: '2016-05-04',
+          date: '大金空调',
           name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
+          address: '1517 弄'
         }, {
-          date: '2016-05-01',
+          date: '大金空调',
           name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
+          address: '1519 弄'
         }, {
-          date: '2016-05-03',
+          date: '大金空调',
           name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
+          address: '1516 弄'
+        },{
+          date: '大金空调',
+          name: '王小虎',
+          address: '1516 弄'
+        },{
+          date: '大金空调',
+          name: '王小虎',
+          address: '1516 弄'
         }]
       }
     },
@@ -89,6 +97,7 @@
 </script>
 
 <style lang="scss" scoped>
+
   .home {
     width: 100%;
     //height: 100%; // overflow: hidden;
@@ -149,6 +158,25 @@
     }
     .list-group {
       // flex: 1;
+
+.title{
+  margin-top: 10px;
+  color:#333;
+  font-weight: 600;
+  // font-family: "Mircrosoft Yahei";
+  font-size: 15px;
+  margin-bottom: 13px;
+  &:after{
+    display: block;
+    content: '';
+    border: none;
+    margin-top: 2px;
+    height: 1px;
+    background-color: #bbb;
+    max-width: 400px;
+    background-image: -webkit-linear-gradient(0deg, #ccc, #bbb, #fff);
+  }
+}
       padding: 10px 20px;
       margin-right: 10px;
       display: flex; // width: 100%;

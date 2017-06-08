@@ -24,10 +24,10 @@
             </el-submenu>
           </el-submenu>-->
           <el-menu-item index="/index/" ><i class="el-icon-menu"></i>首页</el-menu-item>
-          <el-menu-item index="/index/client" ><i class="el-icon-menu"></i>客户</el-menu-item>
-          <el-menu-item index="/index/question"><i class="el-icon-menu"></i>问题</el-menu-item>
-          <el-menu-item index="/index/archive"><i class="el-icon-menu"></i>档案</el-menu-item>
-          <el-menu-item index="/index/system"><i class="el-icon-menu"></i>系统</el-menu-item>
+          <el-menu-item index="/index/client" ><i class="el-icon-picture"></i>客户</el-menu-item>
+          <el-menu-item index="/index/question"><i class="el-icon-document"></i>问题</el-menu-item>
+          <el-menu-item index="/index/archive"><i class="el-icon-information"></i>档案</el-menu-item>
+          <el-menu-item index="/index/system"><i class="el-icon-setting"></i>系统</el-menu-item>
         </el-menu>
       </el-col>
 

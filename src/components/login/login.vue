@@ -51,6 +51,7 @@
     },
     methods: {
       onSubmit(formName) {
+        console.log(this.$refs[formName]);
         this.$refs[formName].validate((valid) => {
           console.log(valid);
           if (valid) {
