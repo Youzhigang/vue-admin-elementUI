@@ -1,13 +1,13 @@
 <template>
-
     <div class="siderbar">
-
       <el-col>
         <div class="logo">
           <img src="http://preview.quanjing.com/ibrm009/ibljoa00748302.jpg" alt="logo" width="100" height="100">
-
         </div>
-        <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" theme="dark" :router='true'>
+        <el-menu default-active="/index/" class="el-menu-vertical-demo" theme="dark" :router='true'
+         @open="handleOpen"
+         @close="handleClose"
+         @select='handleSelect' >
           <!--<el-submenu index="1">
             <template slot="title">
             <i class="el-icon-menu"></i>客户</template>
@@ -30,14 +30,12 @@
           <el-menu-item index="/index/system"><i class="el-icon-setting"></i>系统</el-menu-item>
         </el-menu>
       </el-col>
-
     </div>
-
-
-
-
 </template>
 <script>
+  import bus from '../../store/index.js'
+
+
   export default {
     name: 'siderbar',
     data () {
@@ -57,7 +55,10 @@
       handleClose(key, keyPath) {
         console.log(key, keyPath);
       },
-
+      handleSelect(key, keyPath){
+        // console.log(key, keyPath);
+        bus.$emit('routeChange', key)
+      }
     }
   }
 </script>

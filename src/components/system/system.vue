@@ -60,7 +60,10 @@
             <el-input auto-complete="off" v-model='editRow.name'></el-input>
           </el-form-item>
           <el-form-item label="角色" prop='role'>
-          <el-input auto-complete="off" v-model='editRow.role'></el-input>
+          <!--<el-input auto-complete="off" v-model='editRow.role'></el-input>-->
+          <el-select v-model='editRow.role' placeholder="请选择角色">
+              <el-option v-for="item in options" :key='item.value' :label='item.label' :value='item.value'></el-option>
+            </el-select>
         </el-form-item>
           <div class="button-wrapper">
             <el-form-item>
@@ -81,12 +84,15 @@
             >
           </el-date-picker>
         </el-form-item>
-          <el-form-item label="姓名"  prop='name' >
+          <el-form-item label="*姓名"  prop='name' >
             <el-input auto-complete="off" v-model='newRow.name'></el-input>
           </el-form-item>
-          <el-form-item label="角色" prop='role'>
-          <el-input auto-complete="off" v-model='newRow.role'></el-input>
-        </el-form-item>
+          <el-form-item label="*角色" prop='role'>
+          <!--<el-input auto-complete="off" v-model='newRow.role'></el-input>-->
+            <el-select v-model='newRow.role' placeholder="请选择角色">
+              <el-option v-for="item in options" :key='item.value' :label='item.label' :value='item.value'></el-option>
+            </el-select>
+          </el-form-item>
           <div class="button-wrapper">
             <el-form-item>
               <el-button type="primary" @click="addItem">保存</el-button>
@@ -115,10 +121,15 @@ export default {
         this.showEditDialog =false
       },
       addItem() {
-        this.newRow.date = this.newRow.date.toLocaleDateString()
-        this.tableData3.push(this.newRow)
-        this.newRow ={date: '', name:'' ,status: false, role: ''}
-        this.showAddDialog = false
+        if (this.newRow.date && this.newRow.name && this.newRow.role) {
+          this.newRow.date = this.newRow.date.toLocaleDateString()
+          this.tableData3.push(this.newRow)
+          this.newRow ={date: '', name:'' ,status: false, role: '',creator: 'admin'}
+          this.showAddDialog = false
+        } else {
+          this.$alert('必填项目不能为空')
+          return
+        }
       },
       handleIconClick (ev) {
         console.log(ev);
@@ -150,7 +161,12 @@ export default {
         showEditDialog:false,
         showAddDialog: false,
         editRow: {},
-        newRow: {date: '', name:'' ,status: false, creator: 'admin', role: '普通用户'},
+        newRow: {date: '', name:'' ,status: false, creator: 'admin', role: ''},
+
+        options: [
+          {value: 'administrator', label: '管理员'},
+          {value: 'guest', 'label': '普通用户'}
+        ],
         tableData3: [{
           date: '2016-05-03',
           name: '王小虎',
@@ -221,5 +237,9 @@ export default {
     flex:1;
     margin: 20px 20px 0 20px;
   }
+  .el-form{
+      width: 500px;
+      margin: 0 auto;
+    }
 }
 </style>

@@ -31,7 +31,8 @@
     </div>
 
     <!--add-->
-    <el-dialog title="新增" :visible.sync="showAddDialog" >
+
+    <el-dialog title="新增" :visible.sync="showAddDialog" width='40%' >
         <el-form :model="formData"  :rules='formRules' ref="addForm" label-width="80px">
           <el-form-item label="客户名称"  prop='name'>
             <el-input auto-complete="off"  v-model='formData.name'></el-input>
@@ -65,7 +66,10 @@
         </el-form>
     </el-dialog>
 
+
     <!--edit -->
+
+
     <el-dialog title="编辑" :visible.sync="showEditDialog">
         <el-form  label-width="80px" :model = 'selectRow'>
           <el-form-item label="客户名称"  prop='name' >
@@ -99,6 +103,7 @@
           </div>
         </el-form>
     </el-dialog>
+
   </div>
 </template>
 
@@ -209,7 +214,7 @@ export default {
         tableData: [{
           date: '2016-5-2',
           name: '常熟英迈',
-          person: '张三',
+          person: '张三2222',
           address: 'xxxxx',
           observer:"李四",
           status: true
@@ -250,7 +255,9 @@ export default {
 
 
 <style lang="scss" scoped>
+
  .client {
+
     width: 100%;
     // height: calc(100% - 100px);
     height: calc(100vh - 100px);
@@ -277,6 +284,10 @@ export default {
     }
     .page-footer{
 
+    }
+    .el-form{
+      width: 500px;
+      margin: 0 auto;
     }
   }
 </style>

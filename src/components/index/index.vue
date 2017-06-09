@@ -24,6 +24,7 @@
   import siderbar from '../siderbar/siderbar'
   import headerNav from '../breadcrumb/headerNav.vue'
 
+
   export default {
     name: 'index',
     components: {
@@ -40,8 +41,9 @@
     },
     watch: {
       $route: function (to, from) {
-        console.log('to', to);
-        console.log('from', from);
+        //console.log('to', to); // to.name, to.path
+        //console.log('from', from);
+
         const toDepth = to.path.split('/').length
         const fromDepth = from.path.split('/').length
         this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'

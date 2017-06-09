@@ -281,6 +281,10 @@
         width: calc(100% - 50px);
       }
     }
+    .el-form{
+      width: 500px;
+      margin: 0 auto;
+    }
   }
 
 </style>

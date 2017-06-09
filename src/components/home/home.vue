@@ -34,7 +34,6 @@
         <div class="page-footer">
           <el-pagination layout="prev, pager, next" :total="50" small></el-pagination>
         </div>
-
       </div>
       <div class="archive-list">
         <div class="title">文档列表</div>
@@ -56,6 +55,9 @@
 </template>
 
 <script>
+  import bus from '../../store/index.js'
+
+
   export default {
     name: 'home',
     data() {
@@ -89,6 +91,7 @@
     },
     methods: {
       goPage(path) {
+        bus.$emit('routeChange', path)
         this.$router.push(path)
       }
     }

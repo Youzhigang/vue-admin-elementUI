@@ -157,5 +157,9 @@ export default {
       margin: 20px 20px 0 0;
       // margin-right: 50px;
     }
+    .el-form{
+      width: 500px;
+      margin: 0 auto;
+    }
   }
 </style>
