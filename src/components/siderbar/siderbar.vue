@@ -2,12 +2,12 @@
     <div class="siderbar">
       <el-col>
         <div class="logo">
-          <img src="http://preview.quanjing.com/ibrm009/ibljoa00748302.jpg" alt="logo" width="100" height="100">
+          <img src="../../../static/xiong.jpg" alt="logo" width="100" height="100">
         </div>
         <el-menu default-active="/index/" class="el-menu-vertical-demo" theme="dark" :router='true'
          @open="handleOpen"
          @close="handleClose"
-         @select='handleSelect' >
+         @select="handleSelect" >
           <!--<el-submenu index="1">
             <template slot="title">
             <i class="el-icon-menu"></i>客户</template>
@@ -25,8 +25,14 @@
           </el-submenu>-->
           <el-menu-item index="/index/" ><i class="el-icon-menu"></i>首页</el-menu-item>
           <el-menu-item index="/index/client" ><i class="el-icon-picture"></i>客户</el-menu-item>
+        <!--<el-submenu index="1">
+            <template slot="title"><i class="el-icon-picture"></i>客户</template>
+            <el-menu-item index="/index/client">客户列表</el-menu-item>
+            <el-menu-item index="">续费情况</el-menu-item>
+          </el-submenu>-->
+
           <el-menu-item index="/index/question"><i class="el-icon-document"></i>问题</el-menu-item>
-          <el-menu-item index="/index/archive"><i class="el-icon-information"></i>档案</el-menu-item>
+          <el-menu-item index="/index/service"><i class="el-icon-information"></i>文档</el-menu-item>
           <el-menu-item index="/index/system"><i class="el-icon-setting"></i>系统</el-menu-item>
         </el-menu>
       </el-col>

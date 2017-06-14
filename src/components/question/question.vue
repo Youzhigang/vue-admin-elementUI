@@ -17,6 +17,8 @@
         <el-table :data="showData" border stripe >
           <el-table-column prop="name" label="客户名称" width="180"></el-table-column>
           <el-table-column prop="desc" label="问题描述" width="180"></el-table-column>
+          <el-table-column prop="class" label="问题类别" width="230"></el-table-column>
+
           <el-table-column prop="date" label="提问时间" width="180"></el-table-column>
           <el-table-column label="状态" width='180'>
             <template scope="scope">
@@ -34,10 +36,16 @@
     <div class="page-footer">
         <el-pagination layout="prev, pager, next" :total="510" small></el-pagination>
     </div>
+
+    <!--答复-->
      <el-dialog title="答复" :visible.sync="showReplyDialog" >
         <el-form  label-width="80px" :model='replyData'>
-          <el-form-item label="问题描述"  >
+          <el-form-item label="情况描述"  >
             <span>{{replyData.desc}}</span>
+          </el-form-item>
+
+          <el-form-item label="问题类别"  >
+            <span>{{replyData.class}}</span>
           </el-form-item>
           <el-form-item label="具体内容">
             <!--<el-input auto-complete="off" ></el-input>-->
@@ -69,15 +77,15 @@ export default {
         radio: 3,
         replyData: {},
         tableData:[
-          {name: '常熟英迈a', desc: '严重问题1', date: '2017-6-6',content: "青少年游戏问题很严重啊", 'status': false },
-          {name: '常熟英迈b', desc: '严重问题2', date: '2017-6-6',content: "年轻人玩手机问题很严重啊", 'status': false },
-          {name: '常熟英迈c', desc: '严重问题3', date: '2017-6-6',content: "青少年游戏问题很严重啊", 'status': true },
-          {name: '常熟英迈d', desc: '严重问题4', date: '2017-6-6',content: "青少年游戏问题很严重啊", 'status': false },
-          {name: '常熟英迈e', desc: '严重问题5', date: '2017-6-6',content: "年轻人玩手机问题很严重啊", 'status': true },
-          {name: '常熟英迈f', desc: '严重问题6', date: '2017-6-6',content: "年轻人玩手机问题很严重啊", 'status': true },
-          {name: '常熟英迈g', desc: '严重问题7', date: '2017-6-6',content: "年轻人玩手机问题很严重啊", 'status': true },
-          {name: '常熟英迈h', desc: '严重问题8', date: '2017-6-6',content: "青少年游戏问题很严重啊", 'status': false },
-          {name: '常熟英迈i', desc: '严重问题9', date: '2017-6-6',content: "青少年游戏问题很严重啊", 'status': false }
+          {class: '上门服务-->法律法规咨询',name: '常熟英迈a', desc: '严重问题1', date: '2017-6-6',content: "青少年游戏问题很严重啊", 'status': false },
+          {class: '上门服务-->事件处理方案',name: '常熟英迈b', desc: '严重问题2', date: '2017-6-6',content: "年轻人玩手机问题很严重啊", 'status': false },
+          {class: '上门服务-->起草专门文档',name: '常熟英迈c', desc: '严重问题3', date: '2017-6-6',content: "青少年游戏问题很严重啊", 'status': true },
+          {class: '律师上门-->案件代理',name: '常熟英迈d', desc: '严重问题4', date: '2017-6-6',content: "青少年游戏问题很严重啊", 'status': false },
+          {class: '律师上门-->法律咨询',name: '常熟英迈e', desc: '严重问题5', date: '2017-6-6',content: "年轻人玩手机问题很严重啊", 'status': true },
+          {class: '律师上门-->其他服务',name: '常熟英迈f', desc: '严重问题6', date: '2017-6-6',content: "年轻人玩手机问题很严重啊", 'status': true },
+          // {class: '',name: '常熟英迈g', desc: '严重问题7', date: '2017-6-6',content: "年轻人玩手机问题很严重啊", 'status': true },
+          // {class: '',name: '常熟英迈h', desc: '严重问题8', date: '2017-6-6',content: "青少年游戏问题很严重啊", 'status': false },
+          // {class: '',name: '常熟英迈i', desc: '严重问题9', date: '2017-6-6',content: "青少年游戏问题很严重啊", 'status': false }
         ]
       }
     },

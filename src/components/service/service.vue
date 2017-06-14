@@ -100,7 +100,7 @@
 
 <script>
   export default {
-    name: 'archive',
+    name: 'service',
     methods: {
       multiDel(){
         this.multipleSelection.forEach( (i, index) => {

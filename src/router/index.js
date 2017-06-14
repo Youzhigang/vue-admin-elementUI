@@ -23,7 +23,7 @@ export default new Router({
           { path: '',     name: 'home', component: require('../components/home/home.vue') },
           { path: 'client', name: 'client', component: Client },
           { path: 'question', name: 'question', component: require('../components/question/question.vue')},
-          { path: 'archive', name: 'archive', component: require('../components/archive/archive.vue')},
+          { path: 'service', name: 'service', component: require('../components/service/service.vue')},
           { path: 'system', name: 'system', component: require('../components/system/system.vue')},
 
           { path: 'hello', name: 'hello', component: Hello },

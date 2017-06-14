@@ -23,10 +23,10 @@
         @click='autoCloseNotify'
         ></el-button>
       </el-badge>
-      <el-badge :value="12" class="item">
+      <!--<el-badge :value="12" class="item">
         <el-button :plain="true" type="danger" size="mini" icon="information"
         @click="notAutoCloseNotify"></el-button>
-      </el-badge>
+      </el-badge>-->
       <el-button size="mini" @click='showMsg' >查看</el-button>
       <el-button size="mini" @click.native='loginOut' >退出</el-button>
     </div>
@@ -62,7 +62,7 @@ export default {
       tabs: [{key:'首页', path: '/index/'},
               {key:'客户列表', path: '/index/client'},
               {key: '问题列表',path: '/index/question'},
-              {key:'查看档案',path: '/index/archive'} ,
+              {key:'律师文档',path: '/index/archive'} ,
               {key:'系统管理', path: '/index/system'}
               ]
     }
