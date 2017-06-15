@@ -5,7 +5,7 @@
     <div class="top">
       <el-button :plain="true"  icon="plus" @click='addHandler'>新增</el-button >
       <el-button :plain="true"  icon="edit" @click='editHandler'>编辑</el-button >
-      <el-button :plain="true"  icon="share" @click='renewHandler'>续费</el-button >
+      <!--<el-button :plain="true"  icon="share" @click='renewHandler'>续费</el-button >-->
       <el-button :plain="true"  icon="delete" @click='disableHandler'>禁用</el-button >
       <!--<el-button :plain="true"  icon="search">搜索</el-button >-->
       <el-button :plain="true" >服务<i class="el-icon-upload el-icon--right"></i></el-button>
@@ -46,8 +46,13 @@
                 <span  v-text="scope.row.status? '有效' : '无效' "></span>
               </template>
            </el-table-column>
-          <el-table-column prop="date1" label="开始日期" width="150"></el-table-column>
-          <el-table-column prop="date2" label="结束日期" width="150"></el-table-column>
+          <!--<el-table-column prop="date1" label="开始日期" width="150"></el-table-column>-->
+          <!--<el-table-column prop="date2" label="结束日期" width="150"></el-table-column>-->
+          <el-table-column label='服务时间'>
+            <template scope='scope'>
+              <span v-for='s in scope.row.date' style='margin-right:10px'> {{s}}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="observer" label="观察者"  ></el-table-column>
         </el-table>
     </div>
@@ -127,10 +132,10 @@
         </el-form-item>
         <el-form-item label="到期时间"  prop='date'>
           <el-date-picker
-            v-model="date"
-            type="date"
+            v-model="formData.date"
+            type="daterange"
             placeholder="选择日期"
-            :picker-options="pickerOptions0">
+            :picker-options="pickerOptions1">
           </el-date-picker>
         </el-form-item>
           <div class="button-wrapper">
@@ -160,14 +165,14 @@
         <el-form-item label="服务律师" prop='observer'>
           <el-input auto-complete="off" v-model='selectRow.observer' ></el-input>
         </el-form-item>
-        <el-form-item label="到期时间"  prop='date2'>
+        <!--<el-form-item label="到期时间"  prop='date2'>
           <el-date-picker
             v-model="selectRow.date2"
             type="date"
             placeholder="选择日期"
             :picker-options="pickerOptions0">
           </el-date-picker>
-        </el-form-item>
+        </el-form-item>-->
           <div class="button-wrapper">
             <el-form-item>
               <el-button type="primary" @click="saveItem">保存</el-button>
@@ -177,41 +182,7 @@
         </el-form>
     </el-dialog>
 
-    <!--续费-->
-    <el-dialog title="续费" :visible.sync="showRenewDialog">
-        <el-form  label-width="80px" :model = 'selectRow'>
-          <el-form-item label="客户名称"  prop='name' >
-            <el-input auto-complete="off" :value='selectRow.name'></el-input>
-          </el-form-item>
-          <el-form-item label="客户地址" prop='address'>
-          <el-input auto-complete="off" :value='selectRow.address'></el-input>
-        </el-form-item>
-        <!--<el-form-item label="客户简称" prop='shortName'>
-          <el-input auto-complete="off" :value='selectRow.shortName'></el-input>
-        </el-form-item>-->
-        <!--<el-form-item label="客户编码" prop='person'>
-          <el-input auto-complete="off" :value='selectRow.person' ></el-input>
-        </el-form-item>-->
-        <el-form-item label="服务律师" prop='observer'>
-          <el-input auto-complete="off" :value='selectRow.observer' ></el-input>
-        </el-form-item>
-        <el-form-item label="到期时间"  prop='date2'>
-          <el-date-picker
-            v-model="selectRow.date2"
-            type="daterange"
-             align="right"
-            placeholder="选择日期"
-            :picker-options="pickerOptions1">
-          </el-date-picker>
-        </el-form-item>
-          <div class="button-wrapper">
-            <el-form-item>
-              <el-button type="primary" @click="renewItem">续费</el-button>
-              <!--<el-button @click="resetForm('addForm')">重置</el-button>-->
-            </el-form-item>
-          </div>
-        </el-form>
-    </el-dialog>
+
   </div>
 </template>
 
@@ -337,12 +308,15 @@ export default {
       this.$refs['addForm'].validate((valid) => {
         if (!valid) {
           this.$alert('字段不能为空')
-        } else if (this.date === '') {
+        } else if (this.formData.date.length === 0) {
           this.$alert('时间不能为空')
         } else {
           console.log('ok');
-          this.$set(this.formData,'date2', this.date.toLocaleDateString() )
-          this.tableData.push(deepClone(this.formData))
+          // this.$set(this.formData,'date2', this.date.toLocaleDateString() )
+          // this.tableData.push(deepClone(this.formData))
+          this.formData.date = Array.prototype.map.call(this.formData.date, i => i.toLocaleDateString())
+          this.tableData.push(Object.assign({}, this.formData))
+          this.formData.date = []
           this.showAddDialog = false
         }
       })
@@ -405,7 +379,8 @@ export default {
           shortName: 'leifu',
           person: [{show:false,type:'法务',name:'9527',qq:'123',tel:'',wx:'456'}],
           observer: 'Jack Mao',
-          status: true
+          status: true,
+          date:[]
          },
          editContact: {},
          newContact:{
@@ -416,32 +391,28 @@ export default {
             tel: '54525451'
          },
         tableData: [{
-          date1: '2016-5-2',
-          date2: '2017-5-2',
+          date: ['2016-5-1','2017-5-2'],
           name: '常熟英迈',
           person: [{show:false,type:'法务',name:'赵五',qq:'123',tel:'',wx:'456'},{show:false,type:'主管',name:'阿Q',qq:'',wx:'',tel:''}],
           address: 'xxxxx',
           observer:"李四",
           status: true
         }, {
-          date1: '2016-5-4',
-          date2: '2017-5-4',
+          date: ['2016-5-1','2017-5-4'],
           name: '常熟英迈',
           person: [{show:false,name:'李四',type:'联系人',qq:'',wx:'test',tel:'110'},{show:false,type:'法务',name:'赵五',qq:'123',tel:'',wx:'456'},{show:false,type:'主管',name:'阿Q',qq:'',wx:'',tel:''}],
           address: 'xxxxx',
           observer:"李四",
           status: true
         }, {
-          date1: '2016-5-1',
-          date2: '2017-5-1',
+          date: ['2016-5-1','2017-5-1'],
           name: '常熟英迈',
           person: [{show:false,type:'法务',name:'赵五',qq:'123',tel:'',wx:'456'},{show:false,type:'主管',name:'阿Q',qq:'',wx:'',tel:''}],
           address: 'xxxxx',
           observer:"李四",
           status: true
         }, {
-          date1: '2016-5-3',
-          date2: '2017-5-3',
+          date: ['2016-5-1','2017-5-3'],
           name: '常熟英迈',
           person: [{show:false,name:'李四',type:'联系人',qq:'',wx:'test',tel:'110'},{show:false,type:'法务',name:'赵五',qq:'123',tel:'',wx:'456'},{show:false,type:'主管',name:'阿Q',qq:'',wx:'',tel:''}],
           address: 'xxxxx',
@@ -449,8 +420,7 @@ export default {
           status: true
         },
          {
-          date1: '2016-5-3',
-          date2: '2017-5-3',
+          date: ['2016-5-1','2017-5-3'],
           name: '常熟英迈',
           person: [{show:false,name:'李四',type:'联系人',qq:'',wx:'test',tel:'110'},{show:false,type:'法务',name:'赵五',qq:'123',tel:'',wx:'456'},{show:false,type:'主管',name:'阿Q',qq:'',wx:'',tel:''}],
           address: 'xxxxx',

@@ -21,11 +21,13 @@ export default new Router({
       component: Index,
       children: [
           { path: '',     name: 'home', component: require('../components/home/home.vue') },
-          { path: 'client', name: 'client', component: Client },
+          { path: 'client', name: 'client', component: Client,
+
+          },
+          {path:'client/renew', name: 'renew', component: require('../components/client/renew.vue')},
           { path: 'question', name: 'question', component: require('../components/question/question.vue')},
           { path: 'service', name: 'service', component: require('../components/service/service.vue')},
           { path: 'system', name: 'system', component: require('../components/system/system.vue')},
-
           { path: 'hello', name: 'hello', component: Hello },
         ]
     }

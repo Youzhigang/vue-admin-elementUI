@@ -15,7 +15,7 @@
         <el-tab-pane label="系统管理" name="/index/system"></el-tab-pane>
   </el-tabs>-->
     <ul class="tabs">
-      <li class="tabs-item" v-for="item in tabs" :class="{active: item.path === activeName}">{{item.key}}</li>
+      <li class="tabs-item" v-for="item in tabs" :class="{active: activeName === item.path || activeName.indexOf(item.path) !== -1}">{{item.key}}</li>
     </ul>
     <div class="message-wrapper">
       <el-badge :value="12" class="item">
@@ -52,7 +52,7 @@ export default {
   // },
   mounted() {
     bus.$on('routeChange', (msg) => {
-        // console.log('nopw', msg);
+        console.log('nopw', msg);
         this.activeName = msg
     })
   },
@@ -62,7 +62,7 @@ export default {
       tabs: [{key:'首页', path: '/index/'},
               {key:'客户列表', path: '/index/client'},
               {key: '问题列表',path: '/index/question'},
-              {key:'律师文档',path: '/index/archive'} ,
+              {key:'律师文档',path: '/index/service'} ,
               {key:'系统管理', path: '/index/system'}
               ]
     }

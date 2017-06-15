@@ -24,12 +24,12 @@
             </el-submenu>
           </el-submenu>-->
           <el-menu-item index="/index/" ><i class="el-icon-menu"></i>首页</el-menu-item>
-          <el-menu-item index="/index/client" ><i class="el-icon-picture"></i>客户</el-menu-item>
-        <!--<el-submenu index="1">
+          <!--<el-menu-item index="/index/client" ><i class="el-icon-picture"></i>客户</el-menu-item>-->
+        <el-submenu index="/index/client">
             <template slot="title"><i class="el-icon-picture"></i>客户</template>
             <el-menu-item index="/index/client">客户列表</el-menu-item>
-            <el-menu-item index="">续费情况</el-menu-item>
-          </el-submenu>-->
+            <el-menu-item index="/index/client/renew">续费情况</el-menu-item>
+          </el-submenu>
 
           <el-menu-item index="/index/question"><i class="el-icon-document"></i>问题</el-menu-item>
           <el-menu-item index="/index/service"><i class="el-icon-information"></i>文档</el-menu-item>
