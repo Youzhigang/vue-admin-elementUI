@@ -35,7 +35,9 @@
 
 
 <script>
-import bus from '../../store/index.js'
+import {bus, USER_LOGINOUT} from '../../store/index.js'
+import { mapActions } from 'vuex'
+
 
 const notifyType = ['success', 'warning', 'info', 'error']
 
@@ -68,6 +70,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions([USER_LOGINOUT]),
     handleClick(tab, event) {
 
       return false
@@ -76,6 +79,7 @@ export default {
       // console.log(123);
       this.$router.push('/')
       // 退出 删除登录用户信息
+      this.USER_LOGINOUT()
     },
     autoCloseNotify () {
       let type = Math.round(Math.random() * 3)

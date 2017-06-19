@@ -73,9 +73,9 @@
         <!--<el-form-item label="服务律师" prop='observer'>
           <el-input auto-complete="off" :value='currentRow.observer' ></el-input>
         </el-form-item>-->
-         <!--<el-form-item label="服务律师" prop='service'>
-          <el-input auto-complete="off" :value='currentRow.service' ></el-input>
-        </el-form-item>-->
+         <el-form-item label="服务费用" prop='price'>
+          <el-input auto-complete="off" :value='currentRow.price|test'></el-input>
+        </el-form-item>
         <el-form-item label='服务类型' prop='service'>
          <el-select v-model="currentRow.service" placeholder="请选择服务" clearable multiple  >
           <el-option
@@ -113,6 +113,14 @@
     mounted () {
       // Array.prototype.forEach.call(this.tableData5, a => this.expands.push(a.id))
       this.typeMap = ['gray','primary','success','warning', 'danger'].reverse()
+    },
+    filters: {
+      test (val) {
+        if (val) {
+          return val + '￥'
+        }
+         return
+      }
     },
     methods: {
       handleCurrentChange(val) {
@@ -159,6 +167,7 @@
           period:['2016.9-2017.9','2015.9-2016.8','2012.9-2015.9'],
           address: '上海市普陀区真北路',
           shop: '王小虎夫妻店',
+          price:100000,
         }, {
           id: '12987123',
           name: '常熟大金化工',
@@ -167,6 +176,7 @@
           period:['2016.9-2017.9','2015.9-2016.8','2012.9-2015.9'],
           address: '上海市普陀区真北路',
           shop: '王小虎夫妻店',
+          price:100000,
         }, {
           id: '12987125',
           name: '常熟大金化工',
@@ -175,6 +185,7 @@
           period:['2016.9-2017.9','2015.9-2016.8','2012.9-2015.9'],
           address: '上海市普陀区真北路',
           shop: '王小虎夫妻店',
+          price:100000,
         }, {
           id: '12987126',
           name: '常熟大金化工',
@@ -183,6 +194,7 @@
           period:['2016.9-2017.9','2015.9-2016.8','2012.9-2015.9'],
           address: '上海市普陀区真北路',
           shop: '王小虎夫妻店',
+          price:100000,
         }],
          pickerOptions1: {
           shortcuts: [{

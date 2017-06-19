@@ -28,10 +28,19 @@
 
 
 <script>
+  import { mapActions } from 'vuex';
+  import { USER_LOGIN } from '../../store/index.js'
+
+
   export default {
+    mounted() {
+      // console.log(bus.user.username)
+    },
     data() {
       return {
+        isSubmit: false,
         form: {
+          id: 'test',
           username: 'administrator',
           password: '1'
         },
@@ -50,19 +59,24 @@
       }
     },
     methods: {
+      ...mapActions([USER_LOGIN]),
       onSubmit(formName) {
-        console.log(this.$refs[formName]);
+        // console.log(this.$refs[formName]);
         this.$refs[formName].validate((valid) => {
-          console.log(valid);
+          // console.log(valid);
           if (valid) {
             console.log('submit!');
             // this.$http('')  // 请求后台
+            this.isSubmit = true
+            // if (!this.form.id || !this.form.name) return
+            this.USER_LOGIN(this.form)
             this.$router.push('/index')
+            // this.$router.replace({path: '/index'})
           } else {
             console.log('error submit!!')
             return false;
           }
-        });
+        })
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();

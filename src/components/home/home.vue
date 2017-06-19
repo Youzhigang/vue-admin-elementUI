@@ -55,7 +55,7 @@
 </template>
 
 <script>
-  import bus from '../../store/index.js'
+  import {bus} from '../../store/index.js'
 
 
   export default {

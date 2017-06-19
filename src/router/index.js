@@ -7,11 +7,15 @@ import Client from '../components/client/client.vue'
 // import Home from '../components/home/home.vue'
 
 Vue.use(Router)
+const URI = 'http://localhost:9080'
 
-export default new Router({
+const router = new Router({
   routes: [
     {
-      path: '/',
+      path: '/', redirect:'/login'
+    },
+    {
+      path: '/login',
       name: 'login',
       component : Login
     },
@@ -33,3 +37,7 @@ export default new Router({
     }
   ]
 })
+
+
+
+export default  router
