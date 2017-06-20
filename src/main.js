@@ -4,11 +4,10 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
-
+import ElementUI from 'element-ui'
 import {store} from './store/index'
 
 
-import ElementUI from 'element-ui'
 // import _ from 'lodash'
 
 import 'element-ui/lib/theme-default/index.css'
@@ -29,11 +28,12 @@ router.beforeEach( (to, from, next) => {
 })
 */
 
+
 router.beforeEach( ({meta, path}, from, next) => {
   // console.log(meta, path)
   let isLogin
   let {auth = true} = meta
-  isLogin = Boolean(store.state.user)
+  isLogin = store.state.user.id ? true : false
   console.log(store.state)
   console.log(isLogin)
   if (auth && !isLogin && path !== '/login') {
@@ -42,6 +42,7 @@ router.beforeEach( ({meta, path}, from, next) => {
   }
   next()
 })
+
 
 /* eslint-disable no-new */
 new Vue({
