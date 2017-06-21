@@ -9,7 +9,6 @@ import {store} from './store/index'
 
 
 // import _ from 'lodash'
-
 import 'element-ui/lib/theme-default/index.css'
 
 Vue.config.productionTip = false
