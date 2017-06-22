@@ -44,19 +44,3 @@ export const store = new Vuex.Store({
     }
   }
 })
-
-
-function addNewObjectiveRow(value) {
-            var $divElements = "<div class='row'>"
-                + "<div class='form-inline'>"
-                + "<br /><div class='form-group'><label class='control-label'>Title</label><div class=''><input type='text' class='form-control objectivetitle' placeholder='Title' /></div></div>"
-                + "&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"
-                + "<div class='form-group input-group'><label class='control-label'>Target Completion Date</label><div class=''><input readonly type='text' class='form-control targetdateinput' placeholder='Select Date' /><span class='input-group-addon'><i class='glyphicon glyphicon-calendar'></i></span></div></div>"
-                + "&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"
-                + "<div class='form-group'><label class='control-label'></label><div><input type='button' value='Remove Goal' class='btn-remove btn-danger deleteButton' /></div></div>"
-                + "</div>"
-                + "<br />"
-                + "<div class='form-group'><label class='control-label'> Details</label><div><textarea class='form-control text-area-width goaldetails' rows='4' placeholder='Enter details here...'></textarea></div></div><hr />"
-                + "</div>"
-            return $divElements;
-        }

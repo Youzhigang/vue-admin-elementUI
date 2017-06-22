@@ -1,17 +1,13 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+
+
 import Index from '../components/index/index.vue'
 import Login from '../components/login/login.vue'
 import Client from '../components/client/client.vue'
 import Hello from '@/components/Hello' // test
 // import Home from '../components/home/home.vue'
 
-// const URI = 'http://localhost:9080'
-Vue.use(VueRouter)
 
-const router = new VueRouter({
-  // mode: 'history',
-  routes: [
+const routes =  [
     { path: '/', redirect:'/login'},
     { path: '/login', name: 'login', component : Login },
 
@@ -33,8 +29,7 @@ const router = new VueRouter({
     },
     { path: '*', name: 'ErrorCompoent', component : require('../components/404.vue') },
   ]
-})
 
-export default  router
+export default routes
 
 
