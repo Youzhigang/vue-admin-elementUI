@@ -1,5 +1,3 @@
-
-
 import Index from '../components/index/index.vue'
 import Login from '../components/login/login.vue'
 import Client from '../components/client/client.vue'
@@ -16,14 +14,12 @@ const routes =  [
       // name: 'index',
       component: Index,
       children: [
-          { path: '',     name: 'home', component: require('../components/home/home.vue') },
-          { path: 'client', name: 'client', component: Client,
-
-          },
-          {path:'client/renew', name: 'renew', component: require('../components/client/renew.vue')},
-          { path: 'question', name: 'question', component: require('../components/question/question.vue')},
-          { path: 'service', name: 'service', component: require('../components/service/service.vue')},
-          { path: 'system', name: 'system', component: require('../components/system/system.vue')},
+          { path: '',     name: '主页', component: require('../components/home/home.vue') },
+          { path: 'client', name: '客户列表', component: Client,},
+          { path: 'client/renew', name: '续费情况', component: require('../components/client/renew.vue')},
+          { path: 'question', name: '问题列表', component: require('../components/question/question.vue')},
+          { path: 'service', name: '查看文档', component: require('../components/service/service.vue')},
+          { path: 'system', name: '系统设置', component: require('../components/system/system.vue')},
           { path: 'hello', name: 'hello', component: Hello },
         ]
     },

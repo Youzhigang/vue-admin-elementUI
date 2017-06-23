@@ -3,21 +3,15 @@
     <div class="left">
       <siderbar></siderbar>
     </div>
-
     <div class="middle">
       <headerNav></headerNav>
-
       <transition name="fade" mode="out-in">
         <transition name= "slide-left">
           <router-view class="child-router"></router-view>
         </transition>
       </transition>
     </div>
-
   </div>
-
-
-  </el-row>
 </template>
 
 <script>

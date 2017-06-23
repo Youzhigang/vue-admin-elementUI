@@ -31,18 +31,28 @@ router.beforeEach( (to, from, next) => {
 })
 */
 
+import {Loading} from 'element-ui'
+
+
+
 router.beforeEach( ({meta, path}, from, next) => {
-  // console.log(meta, path)
   let isLogin
   let {auth = true} = meta
+
   isLogin = store.state.user.id ? true : false
   if (auth && !isLogin && path !== '/login') {
     console.log('not login')
-    return next({path: '/login'})
+    next({path: '/login'})
   }
   next()
 })
 
+router.afterEach( route => {
+  // these hooks do not get a next function and cannot affect the navigation
+  // console.log(store.dispatch('AddOption', route))
+  store.dispatch('AddOption', route)
+  console.log('afterEach',route)
+})
 
 /* eslint-disable no-new */
 new Vue({

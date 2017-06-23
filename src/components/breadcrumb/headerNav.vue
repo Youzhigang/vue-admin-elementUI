@@ -14,9 +14,34 @@
         <el-tab-pane label="查看档案" name="/index/archive"></el-tab-pane>
         <el-tab-pane label="系统管理" name="/index/system"></el-tab-pane>
   </el-tabs>-->
+    <!--
     <ul class="tabs">
-      <li class="tabs-item" v-for="item in tabs" :class="{active: activeName === item.path || activeName.indexOf(item.path) !== -1}">{{item.key}}</li>
+      <li class="tabs-item" v-for="item in tabs" :key='item' :class="{active: activeName === item.path || activeName.indexOf(item.path) !== -1}">{{item.key}}</li>
     </ul>
+    -->
+    <!--<el-tabs type="card" v-model="$route.name" class="tabs-nopadding"  closable >
+      <el-tab-pane v-for="(item,index) in options" :key='index' @click.native='test'
+      :label="item.name"
+      :name="item.route">
+
+      </el-tab-pane>-->
+    <ul class="tabs">
+
+      <li class="tabs-item"
+        v-for="(item,index) in options"
+        :key='index'
+        :class="{active: activeName === item.path }"
+        @click.stop='onTabClick(item)'>
+        &nbsp;
+        {{item.name}}
+        <i style="color:#ccc"
+          class="el-icon-circle-cross"
+          @click.stop='onDelClick(index,item)'>
+        </i>
+      </li>
+    </ul>
+
+    </el-tabs>
     <div class="message-wrapper">
       <el-badge :value="12" class="item">
         <el-button :plain="true" type="warning" size="mini" icon="message"
@@ -60,7 +85,8 @@ export default {
   },
   data () {
     return {
-      activeName: '/index/',
+      showDelIcon: false,
+      activeName:'',
       tabs: [{key:'首页', path: '/index/'},
               {key:'客户列表', path: '/index/client'},
               {key: '问题列表',path: '/index/question'},
@@ -69,12 +95,21 @@ export default {
               ]
     }
   },
+  computed: {
+      options(){
+          return this.$store.state.options;
+      },
+
+  },
   methods: {
-    ...mapActions([USER_LOGINOUT]),
+    ...mapActions([USER_LOGINOUT,'RemoveOption']),
     handleClick(tab, event) {
 
       return false
     },
+    // enter () {
+    //   this.showDelIcon = true;
+    // },
     loginOut () {
       // console.log(123);
       this.$router.push('/')
@@ -99,6 +134,21 @@ export default {
           offset: 50,
           duration: 0
       })
+    },
+
+    onTabClick (item) {
+      console.log(item.path)
+      this.activeName = item.path
+      this.$router.push(item.path)
+    },
+    onDelClick (index,name){
+      console.log(index, name)
+
+      if (this.$store.state.options.length !== 1) {
+        this.RemoveOption(name)
+        let routeList = this.$store.state.options.slice()
+        this.$router.push(routeList.pop().path)
+      }
     },
     showMsg () {
 
@@ -138,15 +188,25 @@ export default {
       display: inline-block;
       margin-left:-10px;
       &-item{
+        box-sizing: border-box;
         font-size: 14px;
         list-style: none;
         display: inline-block;
         margin-right: 15px;
+        height: 40px;
+        margin-top: 6px;
+        transition: all .5s;
         &.active{
           color:#50BFFF;
+          //background: #efefef;
+          background-image: linear-gradient(to top, #50BFFF, #50BFFF 2px, transparent 1px);
         }
-        &:not(:last-child)::after{
-          content: '/';
+        &:hover{
+          cursor: pointer;
+        }
+        //&:not(:last-child)::after{
+          &::after{
+          content: '';
           display: inline-block;
           margin-left: 5px;
         }

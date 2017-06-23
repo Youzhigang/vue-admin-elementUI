@@ -4,7 +4,7 @@
         <div class="logo">
           <img src="../../../static/xiong.jpg" alt="logo" width="100" height="100">
         </div>
-        <el-menu default-active="/index/" class="el-menu-vertical-demo" theme="dark" :router='true'
+        <el-menu default-active="/index" class="el-menu-vertical-demo" theme="dark" :router='true'
          @open="handleOpen"
          @close="handleClose"
          @select="handleSelect" >
@@ -23,9 +23,9 @@
               <el-menu-item index="1-4-1">选项1</el-menu-item>
             </el-submenu>
           </el-submenu>-->
-          <el-menu-item index="/index/" ><i class="el-icon-menu"></i>首页</el-menu-item>
+          <el-menu-item index="/index" ><i class="el-icon-menu"></i>首页</el-menu-item>
           <!--<el-menu-item index="/index/client" ><i class="el-icon-picture"></i>客户</el-menu-item>-->
-        <el-submenu index="/index/client">
+        <el-submenu index="/client">
             <template slot="title"><i class="el-icon-picture"></i>客户</template>
             <el-menu-item index="/index/client">客户列表</el-menu-item>
             <el-menu-item index="/index/client/renew">续费情况</el-menu-item>
@@ -40,21 +40,18 @@
 </template>
 <script>
   import {bus} from '../../store/index.js'
-
+  import { mapMutations } from 'vuex'
 
   export default {
     name: 'siderbar',
     data () {
-      return {
-        t: {
-          to: 'hello'
-        }
-      }
+      return {}
     },
     created () {
 
     },
     methods: {
+      ...mapMutations(['AddOption']),
       handleOpen(key, keyPath) {
         console.log(key, keyPath);
       },
@@ -63,6 +60,8 @@
       },
       handleSelect(key, keyPath){
         // console.log(key, keyPath);
+        // console.log(this.$route)
+        // this.AddOption(this.$route)
         bus.$emit('routeChange', key)
       }
     }
