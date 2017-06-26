@@ -21,7 +21,7 @@ Vue.use(VueRouter)
 
 const router = new VueRouter({
   routes: routes,
-  mode: 'history'
+  //mode: 'history'
 })
 /*
 router.beforeEach( (to, from, next) => {
@@ -50,12 +50,13 @@ router.beforeEach( ({meta, path}, from, next) => {
 router.afterEach( route => {
   // these hooks do not get a next function and cannot affect the navigation
   // console.log(store.dispatch('AddOption', route))
+  console.log(vm,123121312312)
   store.dispatch('AddOption', route)
   console.log('afterEach',route)
 })
 
 /* eslint-disable no-new */
-new Vue({
+const vm = new Vue({
   el: '#app',
   store,
   router,

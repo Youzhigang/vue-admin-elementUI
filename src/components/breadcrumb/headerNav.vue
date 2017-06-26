@@ -189,12 +189,12 @@ export default {
       margin-left:-10px;
       &-item{
         box-sizing: border-box;
-        font-size: 14px;
+        font-size: 16px;
         list-style: none;
         display: inline-block;
         margin-right: 15px;
-        height: 40px;
-        margin-top: 6px;
+        height: 43px;
+        margin-top: 3px;
         transition: all .5s;
         &.active{
           color:#50BFFF;
