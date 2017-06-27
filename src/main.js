@@ -50,7 +50,8 @@ router.beforeEach( ({meta, path}, from, next) => {
 router.afterEach( route => {
   // these hooks do not get a next function and cannot affect the navigation
   // console.log(store.dispatch('AddOption', route))
-  console.log(vm,123121312312)
+  // console.log(vm,123121312312)
+  store.dispatch('ActiveOption', route)
   store.dispatch('AddOption', route)
   console.log('afterEach',route)
 })

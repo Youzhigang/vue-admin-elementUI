@@ -39,8 +39,8 @@
     </div>
 </template>
 <script>
-  import {bus} from '../../store/index.js'
-  import { mapMutations } from 'vuex'
+
+  import { mapActions } from 'vuex'
 
   export default {
     name: 'siderbar',
@@ -51,7 +51,7 @@
 
     },
     methods: {
-      ...mapMutations(['AddOption']),
+      ...mapActions(['AddOption']),
       handleOpen(key, keyPath) {
         console.log(key, keyPath);
       },
@@ -62,7 +62,7 @@
         // console.log(key, keyPath);
         // console.log(this.$route)
         // this.AddOption(this.$route)
-        bus.$emit('routeChange', key)
+        // bus.$emit('routeChange', key)
       }
     }
   }

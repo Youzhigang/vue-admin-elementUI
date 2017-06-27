@@ -55,7 +55,6 @@
 </template>
 
 <script>
-  import {bus} from '../../store/index.js'
 
 
   export default {
@@ -91,7 +90,7 @@
     },
     methods: {
       goPage(path) {
-        bus.$emit('routeChange', path)
+        // bus.$emit('routeChange', path)
         this.$router.push(path)
       }
     }
