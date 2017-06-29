@@ -60,7 +60,7 @@
   export default {
     name: 'home',
     mounted(){
-
+       console.log('component mounted !')
     },
     data() {
       return {
