@@ -65,5 +65,3 @@ const vm = new Vue({
   components: { App }
 })
 
-
-

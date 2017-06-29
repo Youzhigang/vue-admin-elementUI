@@ -9,7 +9,8 @@ function resolve (dir) {
 
 module.exports = {
   entry: {
-    app: './src/main.js'
+    app: './src/main.js',
+    vendors: './src/vendors.js'
   },
   output: {
     path: config.build.assetsRoot,
@@ -24,6 +25,10 @@ module.exports = {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src')
     }
+  },
+  externals: {
+      jquery: 'jQuery.noConflict()', //或者jquery:'jQuery',
+      $: 'jQuery.noConflict()'
   },
   module: {
     rules: [

@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <el-form :model="form" class="login-form" :rules="loginRules" ref="ruleForm">
+    <el-form :model="form" class="login-form" :rules="loginRules" ref="ruleForm" v-show="!showRegister">
       <h1 class="title">系统登录</h1>
       <el-form-item prop='username'>
         <el-input placeholder="请输入用户名" prop="username" v-model="form.username">
@@ -17,28 +17,39 @@
           <el-button type="primary" @click="onSubmit('ruleForm')">登录</el-button>
           <el-button @click="resetForm('ruleForm')">重置</el-button>
         </el-form-item>
-
       </div>
-      <div class="tips">
-        tips 首次登录 注册 忘记密码........
+      <div class="tip">
+        <span class="tip-item" @click= 'showRegister = !showRegister'>
+         注册
+        </span>
+        <span class="tip-item">
+          忘记密码
+        </span>
       </div>
     </el-form>
+    <transition name="component-fade" mode="out-in">
+      <register v-if="showRegister" @dismiss='showRegister = !showRegister'></register>
+    </transition>
   </div>
 </template>
 
 
 <script>
   import { mapActions } from 'vuex';
-  import { USER_LOGIN } from '../../store/index.js'
-
+  import { USER_LOGIN } from '../../store/index.js';
+  import register from './register.vue';
 
   export default {
     mounted() {
       // console.log(bus.user.username)
     },
+    components: {
+      register
+    },
     data() {
       return {
         isSubmit: false,
+        showRegister: false,
         form: {
           id: 'test',
           username: 'administrator',
@@ -88,6 +99,12 @@
 
 
 <style lang="scss" scoped>
+.component-fade-enter-active, .component-fade-leave-active {
+  transition: opacity .3s ease;
+}
+.component-fade-enter, .component-fade-leave-active {
+  opacity: 0;
+}
   .login-container {
     position: relative;
     width: 100%;
@@ -135,9 +152,21 @@
           width: 140px;
         }
       }
-      .tips {
-        color: #eee; // text-align: center;
+      .tip {
+        color: #eee;
+        // text-align:center;
         padding-top: 20px;
+        &-item{
+          user-select: none;
+          transition: .2s;
+          margin-left: 10px;
+          margin-right: 40px;
+          &:hover{
+            color:red;
+            // font-weight: 500;
+            cursor: pointer;
+          }
+        }
       }
     }
   }

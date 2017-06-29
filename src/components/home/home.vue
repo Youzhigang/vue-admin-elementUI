@@ -10,7 +10,7 @@
         <div class="number">7</div>
         <div class="title">问题</div>
       </div>
-      <div class="panel-item panel-archive" @click='goPage("/index/archive")'>
+      <div class="panel-item panel-archive" @click='goPage("/index/service")'>
         <div class="number">8</div>
         <div class="title">文档</div>
       </div>
@@ -55,10 +55,13 @@
 </template>
 
 <script>
-
+  import $ from 'jquery'
 
   export default {
     name: 'home',
+    mounted(){
+      console.log($)
+    },
     data() {
       return {
         tableData: [{

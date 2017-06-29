@@ -17,7 +17,7 @@
           <el-table-column prop="name" label="客户名称" width="180"></el-table-column>
           <el-table-column prop="person" label="联系人" width="280">
             <template scope="scope">
-              <span v-for="(p, index) in scope.row.person" style="margin-right:10px">
+              <span v-for="(p, index) in scope.row.person" style="margin-right:10px" :key='index'>
                 <el-popover trigger="hover" placement="top">
                     <p>姓名: {{p.name}}</p>
                     <p>QQ: {{p.qq }}</p>
@@ -50,7 +50,7 @@
           <!--<el-table-column prop="date2" label="结束日期" width="150"></el-table-column>-->
           <el-table-column label='服务时间'>
             <template scope='scope'>
-              <span v-for='s in scope.row.date' style='margin-right:10px'> {{s}}</span>
+              <span v-for='s in scope.row.date' style='margin-right:10px' :key='s'> {{s}}</span>
             </template>
           </el-table-column>
           <el-table-column prop="observer" label="观察者"  ></el-table-column>
@@ -287,11 +287,13 @@ export default {
     saveItem() {
         // ajax
 
+        /*
         if (typeof this.selectRow.date === 'string') {
           this.selectRow.date2 = new Date(this.selectRow.date2).toLocaleDateString()
         } else {
           this.selectRow.date2 = this.selectRow.date2.toLocaleDateString();
         }
+        */
         this.showEditDialog = false
     },
     renewItem() {
@@ -347,7 +349,9 @@ export default {
   },
   computed: {
     selectRow () {
-      return this.multipleSelection[0] || {}
+      return Object.assign({},
+      this.multipleSelection[0] || {}
+      )
     }
   },
    data() {

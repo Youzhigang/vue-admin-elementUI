@@ -128,8 +128,9 @@ export default {
 
     onTabClick (item) {
       console.log(item.path)
+      let path = item.path
       this.activeName = item.path
-      this.$router.push(item.path)
+      this.$router.push({path, query: {t: +new Date()}})
     },
     onDelClick (index,name){
       console.log(index, name)

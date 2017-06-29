@@ -4,7 +4,7 @@
         <div class="logo">
           <img src="../../../static/xiong.jpg" alt="logo" width="100" height="100">
         </div>
-        <el-menu default-active="/index" class="el-menu-vertical-demo" theme="dark" :router='true'
+        <el-menu :default-active="$route.path" class="el-menu-vertical-demo" theme="dark" :router='true'
          @open="handleOpen"
          @close="handleClose"
          @select="handleSelect" >
@@ -31,8 +31,8 @@
             <el-menu-item index="/index/client/renew">续费情况</el-menu-item>
           </el-submenu>
 
-          <el-menu-item index="/index/question"><i class="el-icon-document"></i>问题</el-menu-item>
-          <el-menu-item index="/index/service"><i class="el-icon-information"></i>文档</el-menu-item>
+          <el-menu-item index="/index/question" ><i class="el-icon-document"></i>问题</el-menu-item>
+          <el-menu-item index="/index/service" ><i class="el-icon-information"></i>文档</el-menu-item>
           <el-menu-item index="/index/system"><i class="el-icon-setting"></i>系统</el-menu-item>
         </el-menu>
       </el-col>
@@ -45,7 +45,9 @@
   export default {
     name: 'siderbar',
     data () {
-      return {}
+      return {
+
+      }
     },
     created () {
 
@@ -64,7 +66,12 @@
         // this.AddOption(this.$route)
         // bus.$emit('routeChange', key)
       }
-    }
+    },
+    computed: {
+      activeName () {
+          return this.$store.getters.activeItem
+      }
+  },
   }
 </script>
 
