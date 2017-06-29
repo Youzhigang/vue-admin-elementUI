@@ -23,13 +23,13 @@
       <div class="question-list">
         <div class="title">问题列表</div>
         <div class="question-table">
-          <el-table :data="tableData"  border style="width: 95%" :show-header='false'>
+          <!--<el-table :data="tableData"  border style="width: 95%" :show-header='false'>
             <el-table-column prop="date" width='120' >
             </el-table-column>
             <el-table-column prop="name" label="姓名">
             </el-table-column>
 
-          </el-table>
+          </el-table>-->
         </div>
         <div class="page-footer">
           <el-pagination layout="prev, pager, next" :total="50" small></el-pagination>
@@ -38,13 +38,10 @@
       <div class="archive-list">
         <div class="title">文档列表</div>
         <div class="archive-table">
-        <el-table :data="tableData"  border style="width: 95%" :show-header='false'>
-          <el-table-column prop="date" width='120' >
-          </el-table-column>
-          <el-table-column prop="name" label="姓名">
-          </el-table-column>
-
-        </el-table>
+          <el-table :data="tableData"  border  :show-header='false'>
+            <el-table-column prop="date" width='120' ></el-table-column>
+            <el-table-column prop="name" label="姓名"></el-table-column>
+          </el-table>
         </div>
         <div class="page-footer">
           <el-pagination layout="prev, pager, next" :total="50" small></el-pagination>
@@ -58,7 +55,9 @@
 
   export default {
     name: 'home',
-
+    mounted() {
+    console.log(1234566)
+  },
     data() {
       return {
         tableData: [{

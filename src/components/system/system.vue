@@ -108,6 +108,9 @@
 <script>
 export default {
   name: 'system',
+  mounted() {
+    console.log(new Date)
+  },
   methods: {
       addHandler() {
         this.showAddDialog = true;

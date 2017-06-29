@@ -23,6 +23,9 @@
 <script>
 export default {
   name: 'hello',
+   mounted() {
+    console.log(new Date)
+  },
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'

@@ -26,7 +26,6 @@
 
     </el-tab-pane>-->
   <ul class="tabs">
-
     <li class="tabs-item"
       v-for="(item,index) in options"
       :key='index'
@@ -41,7 +40,7 @@
     </li>
   </ul>
 
-    </el-tabs>
+
     <div class="message-wrapper">
       <el-badge :value="12" class="item">
         <el-button :plain="true" type="warning" size="mini" icon="message"

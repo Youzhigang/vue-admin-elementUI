@@ -82,8 +82,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             console.log('submit!');
-
-            this.$http.get(ApiPath + 'User/login',{
+            this.axios.get(ApiPath + 'User/login',{
               params: {
                 uname: this.form.username,
                 pwd: this.form.password
@@ -91,8 +90,8 @@
             }).then(res => {
               console.log(res.data)
               this.isSubmit = true
-              if (res.data.errcode === '0' && res.data.errmsg === 'ok') {
-                this.USER_LOGIN(this.form)
+              if (res.data.errcode === '0' && res.data.resData) {
+                this.USER_LOGIN({ user:this.form, tokenid: res.data.resData})
                 this.$router.replace({path: '/index'})
               } else {
                 this.$message({
@@ -109,9 +108,6 @@
                 type: 'error'
               });
             })
-
-
-
             // if (!this.form.id || !this.form.name) return
             // this.USER_LOGIN(this.form)
             // this.$router.push('/index')

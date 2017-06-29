@@ -101,6 +101,9 @@
 <script>
   export default {
     name: 'service',
+    mounted() {
+      console.log(new Date)
+    },
     methods: {
       multiDel(){
         this.multipleSelection.forEach( (i, index) => {

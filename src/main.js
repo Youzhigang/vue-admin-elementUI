@@ -8,13 +8,16 @@ import ElementUI from 'element-ui'
 import {store} from './store/index'
 import VueRouter from 'vue-router'
 import 'element-ui/lib/theme-default/index.css'
+import Cookies from 'js-cookie'
 
 // import _ from 'lodash'
 import $ from 'jquery'
+import api from './api'
 
 Vue.config.productionTip = false
-Vue.prototype.$http = Vue.prototype.$http || axios
-Vue.prototype.$$ = Vue.prototype.$$ || $
+Vue.prototype.axios = Vue.prototype.axios || axios
+Vue.prototype.cookies = Vue.prototype.cookies || Cookies
+Vue.prototype.api = api
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)
@@ -33,7 +36,6 @@ router.beforeEach( (to, from, next) => {
 */
 
 import {Loading} from 'element-ui'
-
 
 
 router.beforeEach( ({meta, path}, from, next) => {
@@ -65,4 +67,33 @@ const vm = new Vue({
   template: '<App/>',
   components: { App }
 })
+
+
+
+// 请求的拦截器
+axios.interceptors.request.use(function (config) {
+    let TokenID = Cookies.get('UserTokenID')
+    console.log('TokenID=',TokenID)
+     // 判断请求的类型
+     // 如果是post请求就把默认参数拼到data里面
+     // 如果是get请求就拼到params里面
+     console.log(config)
+    if(config.method === 'post') {
+        console.log(config.data.params)
+        config.data.params = {
+            TokenID: TokenID,
+            ...config.data.params
+        }
+    } else if(config.method === 'get') {
+
+        config.params = {
+            TokenID:TokenID,
+            ...config.params
+        }
+        console.log(config.params)
+    }
+    return config;
+  }, function (error) {
+    return Promise.reject(error);
+  })
 

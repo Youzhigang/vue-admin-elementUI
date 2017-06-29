@@ -5,9 +5,6 @@ import Cookies from 'js-cookie'
 Vue.use(Vuex);
 
 
-
-
-
 export const USER_LOGIN = 'USER_LOGIN' //登录成功
 export const USER_LOGINOUT = 'USER_LOGINOUT' //退出登录
 
@@ -16,28 +13,34 @@ export const store = new Vuex.Store({
   state: {
     user: JSON.parse(window.sessionStorage.getItem('user')) || {},
     options: [],
-    activeRoute: {}
+    activeRoute: {},
+    TokenID: ''
   },
   getters: {
     activeItem: state => {
-      return state.activeRoute.path
+      return state.activeRoute ?　state.activeRoute.path : ''
+    },
+    getTokenID: state => {
+      return state.TokenID || Cookies.get('UserTokenID')
     }
   },
   mutations: {
     /*login*/
-    USER_LOGIN: (state, user) => {
-      state.user = user
-      window.sessionStorage.setItem('user', JSON.stringify(user))
+    USER_LOGIN: (state, payload) => {
+      state.user = payload['user']
+      window.sessionStorage.setItem('user', JSON.stringify(payload['user']))
+      state.TokenID = payload['tokenid']
+      Cookies.set('UserTokenID',  payload['tokenid'], { expires: 1/24 })
     },
     USER_LOGINOUT: (state, user) => {
       window.sessionStorage.removeItem('user')
-      Object.keys(state).forEach( k => Vue.delete(state, k))
+      //Object.keys(state).forEach( k => Vue.delete(state, k))
     },
     /*end*/
 
     /*route config*/
     AddOption: (state, route) => {
-      if (!state.options) { return }
+
       let _names = state.options.map (i => i.name)
       if ( !_names.find(i => i === route.name)
           && route.name !== 'login'
