@@ -130,7 +130,7 @@ export default {
       console.log(item.path)
       let path = item.path
       this.activeName = item.path
-      this.$router.push({path, query: {t: +new Date()}})
+      this.$router.push(path)
     },
     onDelClick (index,name){
       console.log(index, name)

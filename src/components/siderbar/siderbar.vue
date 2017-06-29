@@ -4,7 +4,7 @@
         <div class="logo">
           <img src="../../../static/xiong.jpg" alt="logo" width="100" height="100">
         </div>
-        <el-menu :default-active="$route.path" class="el-menu-vertical-demo" theme="dark" :router='true'
+        <el-menu  class="el-menu-vertical-demo" theme="dark" :router='true'
          @open="handleOpen"
          @close="handleClose"
          @select="handleSelect" >

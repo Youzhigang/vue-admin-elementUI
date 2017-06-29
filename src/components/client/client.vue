@@ -200,6 +200,9 @@ export default {
   components: {
     contact
   },
+  mounted(){
+    console.log(new Date)
+  },
   methods: {
     addContactItem() {
       // this.selectIndex
