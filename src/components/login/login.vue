@@ -38,6 +38,9 @@
   import { mapActions } from 'vuex';
   import { USER_LOGIN } from '../../store/index.js';
   import register from './register.vue';
+  import ApiPath from '../../api'
+  import Cookies from 'js-cookie'
+
 
   export default {
     mounted() {
@@ -52,7 +55,7 @@
         showRegister: false,
         form: {
           id: 'test',
-          username: 'administrator',
+          username: 'admin',
           password: '1'
         },
         loginRules: {
@@ -69,19 +72,49 @@
         }
       }
     },
+    mounted() {
+
+    },
     methods: {
       ...mapActions([USER_LOGIN]),
       onSubmit(formName) {
-        // console.log(this.$refs[formName]);
+        var self = this
         this.$refs[formName].validate((valid) => {
-          // console.log(valid);
           if (valid) {
             console.log('submit!');
-            // this.$http('')  // 请求后台
-            this.isSubmit = true
+
+            this.$http.get(ApiPath + 'User/login',{
+              params: {
+                uname: this.form.username,
+                pwd: this.form.password
+              }
+            }).then(res => {
+              console.log(res.data)
+              this.isSubmit = true
+              if (res.data.errcode === '0' && res.data.errmsg === 'ok') {
+                this.USER_LOGIN(this.form)
+                this.$router.replace({path: '/index'})
+              } else {
+                this.$message({
+                  showClose: true,
+                  message: '登录失败, 用户名或者密码错误',
+                  type: 'error'
+              });
+              }
+            }).catch(err => {
+              console.log(err)
+               this.$message({
+                showClose: true,
+                message: '登录失败, 服务器内部错误, 请联系管理员',
+                type: 'error'
+              });
+            })
+
+
+
             // if (!this.form.id || !this.form.name) return
-            this.USER_LOGIN(this.form)
-            this.$router.push('/index')
+            // this.USER_LOGIN(this.form)
+            // this.$router.push('/index')
             // this.$router.replace({path: '/index'})
           } else {
             console.log('error submit!!')

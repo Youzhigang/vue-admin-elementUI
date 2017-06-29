@@ -10,10 +10,11 @@ import VueRouter from 'vue-router'
 import 'element-ui/lib/theme-default/index.css'
 
 // import _ from 'lodash'
+import $ from 'jquery'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = Vue.prototype.$http || axios
-
+Vue.prototype.$$ = Vue.prototype.$$ || $
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)

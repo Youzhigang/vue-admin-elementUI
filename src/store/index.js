@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-
+import Cookies from 'js-cookie'
 
 Vue.use(Vuex);
 
@@ -37,6 +37,7 @@ export const store = new Vuex.Store({
 
     /*route config*/
     AddOption: (state, route) => {
+      if (!state.options) { return }
       let _names = state.options.map (i => i.name)
       if ( !_names.find(i => i === route.name)
           && route.name !== 'login'
