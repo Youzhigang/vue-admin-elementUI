@@ -109,7 +109,8 @@
 export default {
   name: 'system',
   mounted() {
-    console.log(new Date)
+    console.log(this.api + 'get')
+    this.axios.get(this.api + 'User/get').then(res => console.log(res))
   },
   methods: {
       addHandler() {

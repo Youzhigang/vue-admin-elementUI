@@ -102,7 +102,8 @@
   export default {
     name: 'service',
     mounted() {
-      console.log(new Date)
+      // console.log(new Date)
+      // this.axios.get(this.api + 'User/get').then(res => console.log(res))
     },
     methods: {
       multiDel(){
