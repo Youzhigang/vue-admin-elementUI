@@ -113,6 +113,7 @@
     mounted () {
       // Array.prototype.forEach.call(this.tableData5, a => this.expands.push(a.id))
       this.typeMap = ['gray','primary','success','warning', 'danger'].reverse()
+      console.log('renew mounted')
     },
     filters: {
       test (val) {

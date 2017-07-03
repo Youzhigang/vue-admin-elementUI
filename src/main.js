@@ -5,21 +5,24 @@ import App from './App'
 import routes from './router'
 import axios from 'axios'
 import ElementUI from 'element-ui'
-import {store} from './store/index'
+import { store } from './store/index'
 import VueRouter from 'vue-router'
 import 'element-ui/lib/theme-default/index.css'
 import Cookies from 'js-cookie'
+import iview from 'iview'
 
 // import _ from 'lodash'
 import $ from 'jquery'
-import api from './api'
+import { BasePath,ValidateApi } from './api'
 
 Vue.config.productionTip = false
 Vue.prototype.axios = Vue.prototype.axios || axios
 Vue.prototype.cookies = Vue.prototype.cookies || Cookies
-Vue.prototype.api = api
+Vue.prototype.api = BasePath
+Vue.prototype.Validate = ValidateApi
 
 Vue.use(ElementUI)
+Vue.use(iview)
 Vue.use(VueRouter)
 
 
@@ -35,7 +38,7 @@ router.beforeEach( (to, from, next) => {
 })
 */
 
-import {Loading} from 'element-ui'
+
 
 
 router.beforeEach( ({meta, path}, from, next) => {
@@ -60,7 +63,7 @@ router.afterEach( route => {
 })
 
 /* eslint-disable no-new */
-const vm = new Vue({
+new Vue({
   el: '#app',
   store,
   router,
@@ -68,32 +71,55 @@ const vm = new Vue({
   components: { App }
 })
 
-
-
+import {Loading, Message} from 'element-ui'
+var loadinginstace
+// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 // 请求的拦截器
 axios.interceptors.request.use(function (config) {
     let TokenID = Cookies.get('UserTokenID')
+
+    // axios.get('VALIDATE_API' + TokenID).then(
+    //   res => {
+    //     console.log(res)
+    //   }
+    // )
+    //loadinginstace = Loading.service({ fullscreen: true })
     console.log('TokenID=',TokenID)
      // 判断请求的类型
      // 如果是post请求就把默认参数拼到data里面
      // 如果是get请求就拼到params里面
-     console.log(config)
+
     if(config.method === 'post') {
-        console.log(config.data.params)
-        config.data.params = {
+        config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+        console.log(config.data)
+        config.data = {
             TokenID: TokenID,
-            ...config.data.params
+            ...config.data
         }
+
     } else if(config.method === 'get') {
 
         config.params = {
             TokenID:TokenID,
             ...config.params
         }
-        console.log(config.params)
+
     }
     return config;
   }, function (error) {
+    //loadinginstace.close()
     return Promise.reject(error);
   })
 
+/*
+axios.interceptors.response.use(data => {// 响应成功关闭loading
+  loadinginstace.close()
+  return data
+}, error => {
+  loadinginstace.close()
+  Message.error({
+    message: '加载失败'
+  })
+  return Promise.reject(error)
+})
+*/

@@ -11,7 +11,7 @@
       <el-button :plain="true" >服务<i class="el-icon-upload el-icon--right"></i></el-button>
     </div>
     <div class="table-container">
-        <el-table :data="tableData"  border stripe @selection-change="handleSelectionChange" >
+        <!--<el-table :data="tableData"  border stripe @selection-change="handleSelectionChange" >
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column type="index" width="50"></el-table-column>
           <el-table-column prop="name" label="客户名称" width="180"></el-table-column>
@@ -29,15 +29,12 @@
                     @dblclick='editContactHandle(scope.$index, p, index)'
                     >
                       <el-tag :type="typeMap[index]" style="font-size:14px"  :closable="true" @close='handleClose(scope.row.person, index)'> {{ p.name }}
-                        <!--<el-icon  name="del"></el-icon>-->
-                        <!--<el-icon  name="edit"></el-icon>-->
+
                       </el-tag>
                     </span>
                 </el-popover>
               </span>
-
                  <i class="el-icon-plus" @click='addContact(scope.$index, scope.row.person)' v-show="scope.row.person.length && scope.row.person.length <3" style="color:#B04"></i>
-                 <!--<el-icon name="plus" style="size:10px" v-show="scope.row.person.length && scope.row.person.length <3" @click='addContact'>123</el-icon>-->
               </template>
           </el-table-column>
            <el-table-column prop="address" label="地址" width="180"></el-table-column>
@@ -46,15 +43,15 @@
                 <span  v-text="scope.row.status? '有效' : '无效' "></span>
               </template>
            </el-table-column>
-          <!--<el-table-column prop="date1" label="开始日期" width="150"></el-table-column>-->
-          <!--<el-table-column prop="date2" label="结束日期" width="150"></el-table-column>-->
+
           <el-table-column label='服务时间'>
             <template scope='scope'>
               <span v-for='s in scope.row.date' style='margin-right:10px' :key='s'> {{s}}</span>
             </template>
           </el-table-column>
           <el-table-column prop="observer" label="观察者"  ></el-table-column>
-        </el-table>
+        </el-table>-->
+
     </div>
     <div class="page-footer">
         <el-pagination layout="prev, pager, next" :total="510" small></el-pagination>
@@ -195,6 +192,7 @@ import contact from './contact'
 export default {
   name: 'client',
   created (){
+    console.log('client created')
     this.typeMap = ['danger', 'primary', 'success']
   },
   components: {
@@ -242,28 +240,6 @@ export default {
       this.isShowContactCard = ! this.isShowContactCard
       this.selectIndex = index1
     },
-    // editContact(ev, item, index) {
-    //   const h = this.$createElement;
-    //   console.log(123);
-    //   console.log(item)
-    //   this.$msgbox({
-    //     title: '修改联系人',
-    //     message: h(
-    //       'div', null, [
-    //         h('label', null, '联系人'+ (index + 1)),
-    //         h('el-input',{attrs:{id:'contact_name'+ (index +1) ,value:item.name}}),
-    //         h('label', null, 'QQ'),
-    //         h('el-input',{attrs:{id:'contact_qq'+ (index +1) ,value:item.qq}}),
-    //         h('label', null, 'WeChat'),
-    //         h('el-input',{attrs:{id:'contact_wechat'+ (index +1) ,value:item.wechat}}),
-    //         h('label', null, 'Tel'),
-    //         h('el-input',{attrs:{id:'contact_tel'+ (index +1) ,value:item.tel}}),
-    //       ],
-
-    //     )
-    //   })
-
-    // },
     editContactHandle (index1, item, index2) {
       this.editContact = item
       this.isShowEditContactCard = !this.isShowEditContactCard
@@ -369,7 +345,27 @@ export default {
             return time.getTime() < Date.now() -8.64e7
           }
         },
-       formRules: {
+        columns:[
+        {
+          type: 'selection',
+          width: 60,
+          align: 'center'
+        },
+
+        {
+          title: '姓名',
+          key: 'name'
+        },
+        {
+            title: '年龄',
+            key: 'age'
+        },
+        {
+            title: '地址',
+            key: 'address'
+        }
+        ],
+        formRules: {
           name:[{required: true,message: '不能为空',trigger: 'blur'}],
           address: [{required: true,message: '不能为空',trigger: 'blur'}],
           shortName: [{required: true,message: '不能为空',trigger: 'blur'}],
@@ -394,14 +390,16 @@ export default {
             wx: 'wx122312',
             tel: '54525451'
          },
-        tableData: [{
+        tableData: [
+          {
           date: ['2016-5-1','2017-5-2'],
           name: '常熟英迈',
           person: [{show:false,type:'法务',name:'赵五',qq:'123',tel:'',wx:'456'},{show:false,type:'主管',name:'阿Q',qq:'',wx:'',tel:''}],
           address: 'xxxxx',
           observer:"李四",
           status: true
-        }, {
+        },
+        {
           date: ['2016-5-1','2017-5-4'],
           name: '常熟英迈',
           person: [{show:false,name:'李四',type:'联系人',qq:'',wx:'test',tel:'110'},{show:false,type:'法务',name:'赵五',qq:'123',tel:'',wx:'456'},{show:false,type:'主管',name:'阿Q',qq:'',wx:'',tel:''}],

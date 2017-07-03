@@ -38,7 +38,7 @@
   import { mapActions } from 'vuex';
   import { USER_LOGIN } from '../../store/index.js';
   import register from './register.vue';
-  import ApiPath from '../../api'
+
   import Cookies from 'js-cookie'
 
 
@@ -82,7 +82,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             console.log('submit!');
-            this.axios.get(ApiPath + 'User/login',{
+            this.axios.get(this.api + 'User/login',{
               params: {
                 uname: this.form.username,
                 pwd: this.form.password

@@ -1,6 +1,6 @@
 <template>
   <div class="question">
-    <!--客户列表-->
+
     <!--<div class="top">-->
     <div class="top">
       <el-radio-group v-model="radio" @change='changeHandler'>
@@ -14,41 +14,33 @@
     </div>
     <!--</div>-->
    <div class="table-container">
-        <el-table :data="showData" border stripe >
-          <el-table-column prop="name" label="客户名称" width="180"></el-table-column>
-          <el-table-column prop="desc" label="问题描述" width="180"></el-table-column>
-          <el-table-column prop="class" label="问题类别" width="230"></el-table-column>
+       <Table :columns="columns" :data="showData" border ></Table>
 
-          <el-table-column prop="date" label="提问时间" width="180"></el-table-column>
-          <el-table-column label="状态" width='180'>
-            <template scope="scope">
-              <span v-text="scope.row.status? '已答复': '未答复'"></span>
-            </template>
-          </el-table-column>
-          <el-table-column  label="操作">
-             <template scope="scope">
-              <el-button size="small" @click="replyHandler(scope.$index, scope.row)">答复</el-button>
-              <!--<el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>-->
-            </template>
-          </el-table-column>
-        </el-table>
     </div>
     <div class="page-footer">
-        <el-pagination layout="prev, pager, next" :total="510" small></el-pagination>
+        <Page :total="tableData.length" @on-change='changePage'></Page>
     </div>
 
     <!--答复-->
-     <el-dialog title="答复" :visible.sync="showReplyDialog" >
+    <Modal
+        v-model="showReplyDialog"
+        title="普通的Modal对话框标题"
+        >
+        <p>对话框内容</p>
+        <p>对话框内容</p>
+        <p>对话框内容</p>
+    </Modal>
+     <!--<el-dialog title="答复" :visible.sync="showReplyDialog" >
         <el-form  label-width="80px" :model='replyData'>
           <el-form-item label="情况描述"  >
             <span>{{replyData.desc}}</span>
           </el-form-item>
 
-          <el-form-item label="问题类别"  >
+          <el-form-item label="问题类别">
             <span>{{replyData.class}}</span>
           </el-form-item>
           <el-form-item label="具体内容">
-            <!--<el-input auto-complete="off" ></el-input>-->
+
             <span>{{replyData.content}}</span>
           </el-form-item>
 
@@ -59,37 +51,92 @@
           <div class="button-wrapper">
             <el-form-item>
               <el-button type="primary" @click='replySave'>回复</el-button>
-              <!--<el-button @click="resetForm('addForm')">重置</el-button>-->
+
             </el-form-item>
           </div>
         </el-form>
-    </el-dialog>
+    </el-dialog>-->
   </div>
 </template>
 
 <script>
+
+const PAGE_SIZE = 10
+
 export default {
   name: 'question',
+    created() {
+      console.log('question created')
+    },
+    mounted() {
+      this.axios(this.Validate).then(
+      res => {
+        if (res.data.errcode !== '0') {
+              this.$message({
+                message: '登录失效, 请重新登录',
+                type: 'error'
+              })
+              this.$router.replace({path:'login'})
+            } else {
+              return this.axios.post(this.api + 'Reply/load', {qusarg: ""})
+            }
+      }).then(res => {
+        console.log(res.data.resData)
+        this.tableData = res.data.resData
+      })
+
+    },
     data() {
       return {
+        page: 1,
         showReplyDialog: false,
         kw: '',
         radio: 3,
         replyData: {},
-        tableData:[
-          {class: '上门服务-->法律法规咨询',name: '常熟英迈a', desc: '严重问题1', date: '2017-6-6',content: "青少年游戏问题很严重啊", 'status': false },
-          {class: '上门服务-->事件处理方案',name: '常熟英迈b', desc: '严重问题2', date: '2017-6-6',content: "年轻人玩手机问题很严重啊", 'status': false },
-          {class: '上门服务-->起草专门文档',name: '常熟英迈c', desc: '严重问题3', date: '2017-6-6',content: "青少年游戏问题很严重啊", 'status': true },
-          {class: '律师上门-->案件代理',name: '常熟英迈d', desc: '严重问题4', date: '2017-6-6',content: "青少年游戏问题很严重啊", 'status': false },
-          {class: '律师上门-->法律咨询',name: '常熟英迈e', desc: '严重问题5', date: '2017-6-6',content: "年轻人玩手机问题很严重啊", 'status': true },
-          {class: '律师上门-->其他服务',name: '常熟英迈f', desc: '严重问题6', date: '2017-6-6',content: "年轻人玩手机问题很严重啊", 'status': true },
-          // {class: '',name: '常熟英迈g', desc: '严重问题7', date: '2017-6-6',content: "年轻人玩手机问题很严重啊", 'status': true },
-          // {class: '',name: '常熟英迈h', desc: '严重问题8', date: '2017-6-6',content: "青少年游戏问题很严重啊", 'status': false },
-          // {class: '',name: '常熟英迈i', desc: '严重问题9', date: '2017-6-6',content: "青少年游戏问题很严重啊", 'status': false }
+        tableData:[],
+        columns: [
+          {type: 'index', width: 60, align: 'center'},
+          { title:'问题名称', key: 'questionDesc'},
+          { title:'问题描述', key: 'questionContent'},
+          { title:'问题类别', key: 'questionType'},
+          { title:'提问时间', key: 'createDate',
+            render: (h, params) => {
+              return h('span', null, new Date(params.row.createDate).toLocaleDateString())
+            }
+          },
+          { title:'状态', key: 'questionStatus',
+             render: (h, params) => {
+              return h('span',{},
+              params.row.questionStatus === 1 ? '已答复': '未答复'
+              )
+            }
+          },
+          { title:'操作', key: 'action',
+            render: (h, params) => {
+              return h('Button', {
+                  props: {
+                    type: 'primary',
+                    size: 'small'
+                  },
+                  style: {marginRight: '5px'},
+                  on: {
+                    click: (e)=> {
+                      //e.cancelBubble = true
+                      //e.stopPropagation()
+                      this.showReplyDialog = !this.showReplyDialog
+                      //console.log(e)
+                    }
+                  }
+                }, '回复')
+            }
+          },
         ]
       }
     },
     methods: {
+      changePage(v) {
+        this.page = v
+      },
       replyHandler (index, data) {
         // console.log(index, data);
         // this.showdata[index].status = ! this.showdata[index].status
@@ -107,7 +154,7 @@ export default {
       handleIconClick (ev) {
         // console.log(ev);
         console.log(this.kw);
-        this.showData = this.tableData
+        // this.showData = this.tableData
 
       },
       changeHandler(){
@@ -116,23 +163,26 @@ export default {
 
     },
     computed: {
-      showData () {
+      searchData () {
         if (this.kw !== '') {
           return this.tableData.filter( i => {
-            return i.desc.indexOf(this.kw) !== -1 || i.name.indexOf(this.kw) !== -1
+            return i.questionDesc.indexOf(this.kw) !== -1 || i.questionContent.indexOf(this.kw) !== -1
           })
         } else {
           switch (this.radio) {
             case 1:
-              return this.tableData.filter( i => i.status)
+              return this.tableData.filter( i => i.questionStatus)
             case 2:
-              return this.tableData.filter( i => !i.status)
+              return this.tableData.filter( i => !i.questionStatus)
             case 3:
               return this.tableData
             default:
               break
           }
         }
+      },
+      showData () {
+        return this.searchData.slice( (this.page -1)* PAGE_SIZE, this.page * PAGE_SIZE )
       }
     }
 }

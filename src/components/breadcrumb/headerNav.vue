@@ -176,7 +176,7 @@ export default {
       line-height: 46px;
       height: 46px;
       display: inline-block;
-      margin-left:-10px;
+      //margin-left:-10px;
       &-item{
         box-sizing: border-box;
         font-size: 16px;

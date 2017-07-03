@@ -23,28 +23,35 @@
       <div class="question-list">
         <div class="title">问题列表</div>
         <div class="question-table">
-          <!--<el-table :data="tableData"  border style="width: 95%" :show-header='false'>
-            <el-table-column prop="date" width='120' >
-            </el-table-column>
-            <el-table-column prop="name" label="姓名">
-            </el-table-column>
-
-          </el-table>-->
+          <el-card class="box-card">
+            <div v-for="(q,index) in questionList" :key="q" class="text item">
+              <span class="index">{{index +1}} </span>
+              {{ q.questionDesc  }}
+            </div>
+          </el-card>
         </div>
         <div class="page-footer">
-          <el-pagination layout="prev, pager, next" :total="50" small></el-pagination>
+           <Page :current="1" :total="tableData.length" :page-size='8' simple @on-change='changePage1'></Page>
+          <!--<el-pagination layout="prev, pager, next" :total="50" small></el-pagination>-->
         </div>
       </div>
       <div class="archive-list">
         <div class="title">文档列表</div>
         <div class="archive-table">
-          <el-table :data="tableData"  border  :show-header='false'>
+          <!--<el-table :data="tableData"  border  :show-header='false'>
             <el-table-column prop="date" width='120' ></el-table-column>
             <el-table-column prop="name" label="姓名"></el-table-column>
-          </el-table>
+          </el-table>-->
+          <el-card class="box-card">
+            <div v-for="(d,index) in docList" :key="d" class="text item">
+              <span class="index">{{index +1}} </span>
+              {{ d.title  }}
+            </div>
+          </el-card>
         </div>
         <div class="page-footer">
-          <el-pagination layout="prev, pager, next" :total="50" small></el-pagination>
+          <!--<el-pagination layout="prev, pager, next" :total="50" small></el-pagination>-->
+          <Page :current="page2" :total="tableData2.length" :page-size='8' simple @on-change='changePage2'></Page>
         </div>
       </div>
     </div>
@@ -52,45 +59,61 @@
 </template>
 
 <script>
+  const PAGE_SIZE = 8
 
   export default {
     name: 'home',
     mounted() {
-    console.log(1234566)
-  },
+    // console.log(this.$router)
+    this.axios(this.Validate).then(
+      res => {
+        if (res.data.errcode !== '0') {
+              this.$message({
+                message: '登录失效, 请重新登录',
+                type: 'error'
+              })
+              this.$router.replace({path:'login'})
+            } else {
+              return this.axios.post(this.api + 'Reply/load', {qusarg: ""})
+            }
+      }).then(res => {
+        console.log(res.data.resData)
+        this.tableData = res.data.resData
+      })
+
+    },
     data() {
       return {
-        tableData: [{
-          date: '大金空调',
-          name: '王小虎',
-          address: '1518 弄'
-        }, {
-          date: '大金空调',
-          name: '王小虎',
-          address: '1517 弄'
-        }, {
-          date: '大金空调',
-          name: '王小虎',
-          address: '1519 弄'
-        }, {
-          date: '大金空调',
-          name: '王小虎',
-          address: '1516 弄'
-        },{
-          date: '大金空调',
-          name: '王小虎',
-          address: '1516 弄'
-        },{
-          date: '大金空调',
-          name: '王小虎',
-          address: '1516 弄'
-        }]
+        page1: 1,
+        page2: 1,
+        tableData: [],
+        tableData2: [
+          {title:'asdfsadfasdf'},{title:'asdfsadfasdf'},{title:'asdfsadfasdf'},{title:'asdfsadfasdf'},
+          {title:'asdfsadfasdf'},{title:'asdfsadfasdf'},{title:'asdfsadfasdf'},
+          {title:'asdfsadfasdf'},{title:'asdfsadfasdf'},{title:'asdfsadfasdf'},{title:'asdfsadfasdf'},
+        ]
+      }
+    },
+    computed: {
+      docList () {
+        return this.tableData2.slice((this.page2 - 1) * PAGE_SIZE, this.page2 * PAGE_SIZE)
+      },
+      questionList () {
+        return this.tableData.slice((this.page1 - 1) * PAGE_SIZE, this.page1 * PAGE_SIZE)
       }
     },
     methods: {
       goPage(path) {
         // bus.$emit('routeChange', path)
         this.$router.push(path)
+      },
+      changePage2(v){
+        // console.log(v)
+        this.page2 = v
+      },
+      changePage1(v){
+        // console.log(v)
+        this.page1 = v
       }
     }
   }
@@ -98,7 +121,39 @@
 </script>
 
 <style lang="scss" scoped>
+   .text {
+    font-size: 14px;
+  }
 
+  .item {
+    padding: 5px 0;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    background-color:#ccc;
+    position: relative;
+    left: 0px;
+    transition: .2s;
+    &:hover{
+      left: 1px;
+      background: #999;
+    }
+  }
+  // .item:nth-child(odd)
+  // {
+  //   background-color:#ccc;
+  // }
+  .box-card {
+    // width: 480px;
+  }
+  .index {
+    margin-right: 10px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    padding: 5px 5px;
+    width: 30px;
+    background-color: #888;
+    height: 100%;
+  }
   .home {
     width: 100%;
     //height: 100%; // overflow: hidden;
@@ -193,7 +248,7 @@
           height: 700px;;
         }
         .page-footer{
-
+          user-select: none;
         }
       }
       .archive-list {
@@ -207,7 +262,7 @@
           height: 700px;;
         }
         .page-footer{
-
+          user-select: none;
         }
       }
     }
