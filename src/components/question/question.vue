@@ -3,11 +3,11 @@
 
     <!--<div class="top">-->
     <div class="top">
-      <el-radio-group v-model="radio" @change='changeHandler'>
-        <el-radio :label="1" >已答复</el-radio>
-        <el-radio :label="2">未答复</el-radio>
-        <el-radio :label="3">所有</el-radio>
-      </el-radio-group>
+      <Radio-group v-model="radio" @on-change='changeHandler'>
+        <Radio :label="1" >已答复</Radio>
+        <Radio :label="2">未答复</Radio>
+        <Radio :label="3">所有</Radio>
+      </Radio-group>
       <div class="search-wrapper">
         <el-input icon="search" :on-icon-click="handleIconClick" v-model='kw' placeholder='根据名称和描述搜索'></el-input>
       </div>
@@ -22,51 +22,24 @@
     </div>
 
     <!--答复-->
-    <Modal
-        v-model="showReplyDialog"
-        title="普通的Modal对话框标题"
-        >
-        <p>对话框内容</p>
-        <p>对话框内容</p>
-        <p>对话框内容</p>
-    </Modal>
-     <!--<el-dialog title="答复" :visible.sync="showReplyDialog" >
-        <el-form  label-width="80px" :model='replyData'>
-          <el-form-item label="情况描述"  >
-            <span>{{replyData.desc}}</span>
-          </el-form-item>
-
-          <el-form-item label="问题类别">
-            <span>{{replyData.class}}</span>
-          </el-form-item>
-          <el-form-item label="具体内容">
-
-            <span>{{replyData.content}}</span>
-          </el-form-item>
-
-          <el-form-item label="答复内容"  >
-            <el-input type="textarea" :rows="2" ref="replyContent"></el-input>
-          </el-form-item>
-
-          <div class="button-wrapper">
-            <el-form-item>
-              <el-button type="primary" @click='replySave'>回复</el-button>
-
-            </el-form-item>
-          </div>
-        </el-form>
-    </el-dialog>-->
+    <transition name='fade'>
+    <replyModal v-if="showReplyDialog" @toggle='toggle' @changeStatus='changeStatus' :replyData='replyData'></replyModal>
+    </transition>
   </div>
 </template>
 
 <script>
+import replyModal from './modal';
 
 const PAGE_SIZE = 10
 
 export default {
   name: 'question',
+  components: {
+    replyModal
+  },
     created() {
-      console.log('question created')
+      console.log('question created!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
     },
     mounted() {
       this.axios(this.Validate).then(
@@ -76,12 +49,13 @@ export default {
                 message: '登录失效, 请重新登录',
                 type: 'error'
               })
-              this.$router.replace({path:'login'})
+              // this.$router.replace({path:'login'})
+               this.$router.replace({name: 'login'})
             } else {
               return this.axios.post(this.api + 'Reply/load', {qusarg: ""})
             }
       }).then(res => {
-        console.log(res.data.resData)
+        console.log(res)
         this.tableData = res.data.resData
       })
 
@@ -99,12 +73,12 @@ export default {
           { title:'问题名称', key: 'questionDesc'},
           { title:'问题描述', key: 'questionContent'},
           { title:'问题类别', key: 'questionType'},
-          { title:'提问时间', key: 'createDate',
+          { title:'提问时间', width:100, key: 'createDate',
             render: (h, params) => {
               return h('span', null, new Date(params.row.createDate).toLocaleDateString())
             }
           },
-          { title:'状态', key: 'questionStatus',
+          { title:'状态', key: 'questionStatus', width:100,
              render: (h, params) => {
               return h('span',{},
               params.row.questionStatus === 1 ? '已答复': '未答复'
@@ -121,21 +95,27 @@ export default {
                   style: {marginRight: '5px'},
                   on: {
                     click: (e)=> {
-                      //e.cancelBubble = true
-                      //e.stopPropagation()
-                      this.showReplyDialog = !this.showReplyDialog
-                      //console.log(e)
+                      // console.log(params)
+                      this.replyData = Object.assign({}, params.row)
+                      this.toggle()
                     }
                   }
-                }, '回复')
+                }, params.row.questionStatus === 1? '查看': '回复')
             }
           },
         ]
       }
     },
     methods: {
+      changeStatus(id) {
+        this.tableData.find(item => item.id === id).questionStatus =1
+      },
+
       changePage(v) {
         this.page = v
+      },
+      toggle () {
+        this.showReplyDialog = !this.showReplyDialog
       },
       replyHandler (index, data) {
         // console.log(index, data);
@@ -145,12 +125,7 @@ export default {
         this.replyData = data
         // data.status = !data.status
       },
-      replySave () {
-        // console.log(this.replyData);
-        this.$alert(this.$refs.replyContent.$data.currentValue, '回复内容: ')
-        this.replyData.status = ! this.replyData.status
-        this.showReplyDialog = false
-      },
+
       handleIconClick (ev) {
         // console.log(ev);
         console.log(this.kw);
@@ -163,6 +138,8 @@ export default {
 
     },
     computed: {
+      // selectedData () {},
+
       searchData () {
         if (this.kw !== '') {
           return this.tableData.filter( i => {
@@ -220,4 +197,19 @@ export default {
       margin: 0 auto;
     }
   }
+// .fade-enter-active, .fade-leave-active{  //状态结束会被移除
+//       transition: 5s;
+// }
+// .fade-enter-active {
+//   transform: translateY(100px);
+// }
+// .fade-enter, .fade-leave-active{
+//   transform: translateY(0);
+//   opacity: 0;
+// }
+// .fade-leave{
+//   opacity: 0;
+// }
+
+
 </style>

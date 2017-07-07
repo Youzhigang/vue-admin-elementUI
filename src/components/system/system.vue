@@ -3,71 +3,36 @@
     <div class="top">
       <Button icon="plus" @click.stop='addHandler'>创建</Button>
       <Button icon="edit" @click='disableHandler'>禁用</Button>
-      <Button icon="ios-trash" @click='deleteHandler'>删除</Button>
+      <!--<Button icon="ios-trash" @click='deleteHandler'>删除</Button>-->
 
       <div class="search-wrapper">
-        <el-input icon="search" :on-icon-click="handleIconClick"></el-input>
+        <Input icon="search" @on-click="handleIconClick" v-model="kw"></Input>
       </div>
     </div>
     <div class="table-container">
-      <Table :data='tableData3' :columns='columns'></Table>
+      <Table :data='showList' :columns='columns'></Table>
     </div>
     <div class="page-footer">
-      <el-pagination layout="prev, pager, next" :total="510" small></el-pagination>
+       <Page :total="tableData3.length" @on-change='changePage'></Page>
     </div>
 
-    <!--edit-->
-    <!--<el-dialog title="编辑" :visible.sync="showEditDialog">
-      <el-form label-width="80px" :model='editRow'>
-        <el-form-item label="创建日期" prop='date'>
-          <el-date-picker v-model="editRow.date" type="date" placeholder="选择日期">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="姓名" prop='name'>
-          <el-input auto-complete="off" v-model='editRow.name'></el-input>
-        </el-form-item>
-        <el-form-item label="角色" prop='role'>
-          <el-select v-model='editRow.role' placeholder="请选择角色">
-            <el-option v-for="item in options" :key='item.value' :label='item.label' :value='item.value'></el-option>
-          </el-select>
-        </el-form-item>
-        <div class="button-wrapper">
-          <el-form-item>
-            <el-button type="primary" @click="saveItem">保存</el-button>
-          </el-form-item>
-        </div>
-      </el-form>
-    </el-dialog>-->
-    <!--add-->
-    <!--<el-dialog title="新增" :visible.sync="showAddDialog">
-      <el-form label-width="80px" :model='newRow'>
 
-        <el-form-item label="*姓名" prop='name'>
-          <el-input auto-complete="off" v-model='newRow.userName'></el-input>
-        </el-form-item>
-        <el-form-item label="*角色" prop='role'>
-
-          <el-select v-model='newRow.roleType' placeholder="请选择角色">
-            <el-option v-for="item in options" :key='item.value' :label='item.label' :value='item.value'></el-option>
-          </el-select>
-        </el-form-item>
-        <div class="button-wrapper">
-          <el-form-item>
-            <el-button type="primary" @click="addItem">保存</el-button>
-
-          </el-form-item>
-        </div>
-      </el-form>
-    </el-dialog>-->
+    <addModal v-show="showAddDialog" @toggle='toggle' :action='action' :editRow='selectRow'></addModal>
   </div>
 </template>
 
 
 <script>
+  import addModal from './addModal.vue'
 
+  const PAGE_SIZE = 8
 
   export default {
     name: 'system',
+
+    components: {
+      addModal
+    },
 
     mounted() {
       console.log(this.Validate)
@@ -78,7 +43,8 @@
               message: '登录失效, 请重新登录',
               type: 'error'
             })
-            this.router.replace({path:'login'})
+            // this.$router.replace({path:'login'})
+            this.$router.replace({name: 'login'})
           } else {
             return this.axios.post(this.api + 'User/load',{})
           }
@@ -88,9 +54,32 @@
       })
 
     },
+    computed: {
+      searchData () {
+        if (this.kw !== '') {
+          return this.tableData3.filter( i => {
+            return i.userName.indexOf(this.kw) !== -1 || i.loginCode.indexOf(this.kw) !== -1
+          })
+        } else {
+          return this.tableData3
+        }
+      },
+      showList () {
+        return this.searchData.slice((this.page - 1) * PAGE_SIZE, this.page * PAGE_SIZE)
+        // return this.tableData3
+      },
+
+    },
     methods: {
+      changePage(v) {
+        this.page = v
+      },
+      toggle() {
+        this.showAddDialog = ! this.showAddDialog;
+      },
       addHandler() {
-        this.showAddDialog = true;
+        this.toggle()
+        this.action = 'add'
       },
       saveItem() {
         if (typeof this.editRow.date === 'string') {
@@ -130,6 +119,7 @@
         ).then(res => {
           // this.tableData3 = res.data.resdata
           // console.log(res)
+          // new
         })
 
           this.tableData3.push(this.newRow)
@@ -140,22 +130,46 @@
         }
       },
       handleIconClick(ev) {
-        console.log(ev);
+
       },
-      handleSelectionChange(val) {
-        this.multipleSelection = val;
-      },
+
       handleEdit(index, row) {
         console.log(index, row);
         this.editRow = row
         this.showEditDialog = true
       },
-      deleteHandler() {
-        this.multipleSelection.forEach((i, index) => {
-          if (this.tableData3.indexOf(i) !== -1) {
-            this.tableData3.splice(index, 1)
+      deleteHandler(id) {
+        this.$confirm('删除该用户, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+        }).then(()=>{
+          return this.axios.get(this.Validate)
+        }).then((res) => {
+          if (res.data.errcode !== '0') {
+            this.$message({
+              message: '登录失效, 请重新登录',
+              type: 'error'
+            })
+            // this.$router.replace({path:'login'})
+            this.$router.replace({name: 'login'})
+          } else {
+            return this.axios.get( this.api + 'User/delete', { params: { IDList: id}})
           }
-        })
+        }).then(res => {
+          if (res.data.errcode === '0'){
+            this.$message({
+              type: 'info',
+              message: '删除成功'
+            });
+
+          }
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
       },
       disableHandler() {
         this.multipleSelection.forEach(i => {
@@ -165,27 +179,12 @@
     },
     data() {
       return {
-        multipleSelection: [],
-        showEditDialog: false,
+        page: 1,
+        kw: '',
+        action: '',
+        selectRow: {},
         showAddDialog: false,
         editRow: {},
-        newRow: {
-          createDate: '',
-          userName: '',
-          enabled: '1',
-          roleType: ''
-
-        },
-
-        options: [{
-            value: 'administrator',
-            label: '管理员'
-          },
-          {
-            value: 'guest',
-            'label': '普通用户'
-          }
-        ],
         tableData3: [],
         columns: [
           {
@@ -208,6 +207,10 @@
           {
             title:'姓名',
             key: 'userName'
+          },
+          {
+            title:'登录账号',
+            key: 'loginCode'
           },
           {
             title:'角色',
@@ -242,8 +245,10 @@
                   },
                   style: {marginRight: '5px'},
                   on: {
-                    clicl: ()=> {
-
+                    click: ()=> {
+                      this.selectRow = params.row
+                      this.action = 'edit'
+                      this.toggle()
                     }
                   }
                 }, '编辑'),
@@ -255,7 +260,7 @@
                   style: {marginRight: '5px'},
                   on: {
                     click: ()=> {
-
+                      this.deleteHandler(params.row.id)
                     }
                   }
                 }, '删除')

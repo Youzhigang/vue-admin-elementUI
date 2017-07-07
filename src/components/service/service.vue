@@ -3,48 +3,32 @@
     <div class="left-section">
       <el-input icon="search" :on-icon-click="searchIconClick"></el-input>
       <ul class="list">
-        <li v-for="item in listData">{{item}}</li>
+        <li v-for="item in listData" :key='item'>{{item}}</li>
 
       </ul>
     </div>
     <div class="right-section">
       <div class="btn-group">
-        <el-button :plain="true" icon="plus" @click='addHandler'>创建</el-button>
-        <el-button :plain="true" icon="edit" @click='disableHandler'>禁用</el-button>
-        <el-button :plain="true" icon="delete" @click='multiDel'>删除</el-button>
-        <el-button :plain="true"  icon="share" >分发</el-button >
+        <Button icon="plus" @click='toggle'>上传文件</Button>
+        <Button icon="edit" @click='disableHandler'>禁用</Button>
+        <Button icon="delete" @click='multiDel'>删除</Button>
+        <Button  icon="share" >分发</Button >
+        <!--<Upload
+          multiple
+          action="//jsonplaceholder.typicode.com/posts/">
+          <Button type="ghost" icon="ios-cloud-upload-outline">上传文件</Button>
+        </Upload>-->
+
       </div>
       <div class="table-container">
-        <el-table ref="multipleTable" :data="tableData3"
-        border tooltip-effect="dark" style="width: 100%"
-         @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="80"></el-table-column>
-          <el-table-column type="index" width="80"></el-table-column>
-          <el-table-column label="上传日期" width="120">
-            <template scope="scope">{{ scope.row.date }}</template>
-          </el-table-column>
-          <el-table-column prop="name" label="名称" width="120">
-          </el-table-column>
-          <el-table-column prop="address" label="保存地址" show-overflow-tooltip></el-table-column>
-          <el-table-column  label="状态" show-overflow-tooltip width='80'>
-            <template scope="scope">
-              <span v-text="scope.row.status? '有效': '无效'"></span>
-            </template>
-          </el-table-column>
-          <el-table-column label='操作'>
-            <template scope="scope">
-              <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-              <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
+
       </div>
       <div class="page-footer">
-        <el-pagination layout="prev, pager, next" :total="510" small></el-pagination>
-    </div>
+          <!--<Page :total="tableData.length" @on-change='changePage'></Page>-->
+      </div>
     </div>
     <!--edit-->
-    <el-dialog title="编辑" :visible.sync="showEditDialog">
+    <!--<el-dialog title="编辑" :visible.sync="showEditDialog">
         <el-form  label-width="80px" :model = 'editRow'>
           <el-form-item label="名称"  prop='name' >
             <el-input auto-complete="off" v-model='editRow.name'></el-input>
@@ -63,14 +47,13 @@
           <div class="button-wrapper">
             <el-form-item>
               <el-button type="primary" @click="saveItem">保存</el-button>
-              <!--<el-button @click="resetForm('addForm')">重置</el-button>-->
             </el-form-item>
           </div>
         </el-form>
-    </el-dialog>
+    </el-dialog>-->
 
     <!--add-->
-    <el-dialog title="新增" :visible.sync="showAddDialog">
+    <!--<el-dialog title="新增" :visible.sync="showAddDialog">
         <el-form  label-width="80px" :model = 'newRow'>
           <el-form-item label="名称"  prop='name' >
             <el-input auto-complete="off" v-model='newRow.name'></el-input>
@@ -89,39 +72,34 @@
           <div class="button-wrapper">
             <el-form-item>
               <el-button type="primary" @click="addItem">保存</el-button>
-              <!--<el-button @click="resetForm('addForm')">重置</el-button>-->
             </el-form-item>
           </div>
         </el-form>
-    </el-dialog>
+    </el-dialog>-->
+    <upModal v-if="showAddDialog" @toggle='toggle'></upModal>
   </div>
 </template>
 
 
 <script>
+  import upModal from './upload.vue'
+
+
   export default {
     name: 'service',
+    components: {
+      upModal
+    },
     mounted() {
-      // console.log(new Date)
+      console.log(new Date)
       // this.axios.get(this.api + 'User/get').then(res => console.log(res))
     },
     methods: {
-      multiDel(){
-        this.multipleSelection.forEach( (i, index) => {
-          if (this.tableData3.indexOf(i) !== -1) {
-            this.tableData3.splice(index, 1)
-          }
-        })
-        this.multipleSelection = []
+      toggle(){
+        console.log(123)
+        this.showAddDialog = !this.showAddDialog
       },
-      disableHandler() {
-        this.multipleSelection.forEach(i => {
-          i.status = false
-        })
-      },
-      addHandler() {
-        this.showAddDialog = true;
-      },
+
       searchIconClick() {
         console.log('search');
       },
@@ -174,50 +152,13 @@
 
     data() {
       return {
-        showEditDialog:false,
         showAddDialog: false,
         editRow: {},
         newRow: {date: '', name:'' ,status: false, address: ''},
         listData: [
           "常熟英迈","三菱电机","三菱电机","三菱电机","三菱电机","三菱电机","三菱电机"
         ],
-        tableData3: [{
-          date: '2016-05-03',
-          name: '王小虎',
-          status:true,
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-02',
-          name: '王小2',
-          status:true,
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          status:true,
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          status:true,
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-08',
-          name: '王小虎',
-          status:true,
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-06',
-          name: '王小虎',
-          status:true,
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-07',
-          name: '王小虎',
-          status:true,
-          address: '上海市普陀区金沙江路 1518 弄'
-        }],
-        multipleSelection: []
+        tableData: [],
       }
     }
   }

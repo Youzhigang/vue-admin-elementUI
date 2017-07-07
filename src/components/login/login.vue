@@ -36,7 +36,7 @@
 
 <script>
   import { mapActions } from 'vuex';
-  import { USER_LOGIN } from '../../store/index.js';
+  import { USER_LOGIN, SET_USERINFO } from '../../store/index.js';
   import register from './register.vue';
 
   import Cookies from 'js-cookie'
@@ -76,7 +76,11 @@
 
     },
     methods: {
-      ...mapActions([USER_LOGIN]),
+      // ...mapActions([USER_LOGIN, SET_USERINFO]),
+      ...mapActions({
+        USER_LOGIN: 'USER_LOGIN',
+        SET_USERINFO: 'SET_USERINFO'
+      }),
       onSubmit(formName) {
         var self = this
         this.$refs[formName].validate((valid) => {
@@ -92,15 +96,24 @@
               this.isSubmit = true
               if (res.data.errcode === '0' && res.data.resData) {
                 this.USER_LOGIN({ user:this.form, tokenid: res.data.resData})
-                this.$router.replace({path: '/index'})
-              } else {
+                return this.axios.get(this.api + 'User/get', {})
+                // this.$router.replace({path: '/index'})
+              }
+
+              else {
                 this.$message({
                   showClose: true,
                   message: '登录失败, 用户名或者密码错误',
                   type: 'error'
-              });
+                });
+                return
               }
-            }).catch(err => {
+            }).then(
+              res => {
+                this.SET_USERINFO({'userinfo': res.data.resuser})
+                this.$router.replace({path: '/index'})
+              }
+            ).catch(err => {
               console.log(err)
                this.$message({
                 showClose: true,
@@ -108,10 +121,7 @@
                 type: 'error'
               });
             })
-            // if (!this.form.id || !this.form.name) return
-            // this.USER_LOGIN(this.form)
-            // this.$router.push('/index')
-            // this.$router.replace({path: '/index'})
+
           } else {
             console.log('error submit!!')
             return false;

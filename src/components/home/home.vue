@@ -72,9 +72,10 @@
                 message: '登录失效, 请重新登录',
                 type: 'error'
               })
-              this.$router.replace({path:'login'})
+              // this.$router.replace({path:'login'})
+              this.$router.replace({name: 'login'})
             } else {
-              return this.axios.post(this.api + 'Reply/load', {qusarg: ""})
+              return this.axios.post(this.api + 'Reply/load', {qusarg: " "})
             }
       }).then(res => {
         console.log(res.data.resData)
@@ -129,10 +130,13 @@
     padding: 5px 0;
     border-radius: 4px;
     margin-bottom: 10px;
-    background-color:#ccc;
+    background-color:#d8d8d8;
     position: relative;
     left: 0px;
     transition: .2s;
+    &:nth-child(even) {
+      background-color: #eee;
+    }
     &:hover{
       left: 1px;
       background: #999;

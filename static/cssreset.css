@@ -32,3 +32,47 @@ div,h1,h2,h3,h4,h5,ul,li,section{
 }
 
 
+.ivu-form .ivu-form-item-label{
+  font-size: 14px!important;
+}
+
+
+/*.form-container{
+    background-color: #fff;
+    width: 500px;
+    border-radius: 5px;
+    padding: 20px;
+    position: fixed;
+    left:50%;
+    top: 50%;
+    margin-left: -250px;
+    margin-top: -250px;
+    z-index: 11;
+  }
+  .form-container  .title{
+      margin-bottom: 20px;
+    }
+  .form-container  .title  h3{
+        display: inline-block;
+      }
+    .form-container  .title  i{
+        margin-right: 20px;
+        }
+       .form-container  .title  i:hover{
+          cursor: pointer;
+        }*/
+
+
+
+.el-loading-mask {
+    position: absolute;
+    z-index: 10000;
+    /* background-color: hsla(0,0%,100%,.9); */
+    background: rgba(0,0,0,0.3)!important;
+    margin: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transition: opacity .3s;
+}

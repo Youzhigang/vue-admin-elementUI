@@ -4,180 +4,29 @@
     <!--客户列表-->
     <div class="top">
       <el-button :plain="true"  icon="plus" @click='addHandler'>新增</el-button >
-      <el-button :plain="true"  icon="edit" @click='editHandler'>编辑</el-button >
+      <!--<el-button :plain="true"  icon="edit" @click='editHandler'>编辑</el-button >-->
       <!--<el-button :plain="true"  icon="share" @click='renewHandler'>续费</el-button >-->
-      <el-button :plain="true"  icon="delete" @click='disableHandler'>禁用</el-button >
+      <!--<el-button :plain="true"  icon="delete" @click='disableHandler'>禁用</el-button >-->
       <!--<el-button :plain="true"  icon="search">搜索</el-button >-->
-      <el-button :plain="true" >服务<i class="el-icon-upload el-icon--right"></i></el-button>
+      <!--<el-button :plain="true" >服务<i class="el-icon-upload el-icon--right"></i></el-button>-->
     </div>
     <div class="table-container">
-        <!--<el-table :data="tableData"  border stripe @selection-change="handleSelectionChange" >
-          <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column type="index" width="50"></el-table-column>
-          <el-table-column prop="name" label="客户名称" width="180"></el-table-column>
-          <el-table-column prop="person" label="联系人" width="280">
-            <template scope="scope">
-              <span v-for="(p, index) in scope.row.person" style="margin-right:10px" :key='index'>
-                <el-popover trigger="hover" placement="top">
-                    <p>姓名: {{p.name}}</p>
-                    <p>QQ: {{p.qq }}</p>
-                    <p>WeChat: {{p.wx}}</p>
-                    <p>Tel: {{p.tel}}</p>
-                    <p>职务: {{p.type}}</p>
-                    <span slot="reference" class="name-wrapper"
-
-                    @dblclick='editContactHandle(scope.$index, p, index)'
-                    >
-                      <el-tag :type="typeMap[index]" style="font-size:14px"  :closable="true" @close='handleClose(scope.row.person, index)'> {{ p.name }}
-
-                      </el-tag>
-                    </span>
-                </el-popover>
-              </span>
-                 <i class="el-icon-plus" @click='addContact(scope.$index, scope.row.person)' v-show="scope.row.person.length && scope.row.person.length <3" style="color:#B04"></i>
-              </template>
-          </el-table-column>
-           <el-table-column prop="address" label="地址" width="180"></el-table-column>
-           <el-table-column  label="状态" width="80">
-              <template scope="scope">
-                <span  v-text="scope.row.status? '有效' : '无效' "></span>
-              </template>
-           </el-table-column>
-
-          <el-table-column label='服务时间'>
-            <template scope='scope'>
-              <span v-for='s in scope.row.date' style='margin-right:10px' :key='s'> {{s}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="observer" label="观察者"  ></el-table-column>
-        </el-table>-->
-
+        <Table  highlight-row border :columns="columns" :data="showList"  @on-current-change='current' ></Table>
     </div>
     <div class="page-footer">
-        <el-pagination layout="prev, pager, next" :total="510" small></el-pagination>
+        <Page :total="tableData.length" @on-change='changePage'></Page>
     </div>
 
-    <!--add contact-->
-    <el-dialog title='新增联系人' :visible.sync='isShowContactCard'>
-      <el-form :model='newContact' label-width='80px'>
-         <el-form-item label="姓名"  prop='name'>
-            <el-input auto-complete="off"  v-model='newContact.name'></el-input>
-          </el-form-item>
-          <el-form-item label="QQ"  prop='qq'>
-            <el-input auto-complete="off"  v-model='newContact.qq'></el-input>
-          </el-form-item>
-          <el-form-item label="微信"  prop='wx'>
-            <el-input auto-complete="off"  v-model='newContact.wx'></el-input>
-          </el-form-item>
-          <el-form-item label="电话"  prop='tel'>
-            <el-input auto-complete="off"  v-model='newContact.tel'></el-input>
-          </el-form-item>
-           <el-form-item label="职务"  prop='type'>
-            <el-input auto-complete="off"  v-model='newContact.type'></el-input>
-          </el-form-item>
-           <div class="button-wrapper">
-            <el-form-item>
-              <el-button type="primary" @click="addContactItem">确定</el-button>
-            </el-form-item>
-          </div>
-      </el-form>
-    </el-dialog>
+    <addCustomer
+    v-if="showAddDialog"
+    @toggle='toggle'
+    @addCus = 'addCusCb'
 
-    <!--edit contact-->
-    <el-dialog title='编辑联系人' :visible.sync='isShowEditContactCard'>
-      <el-form :model='editContact' label-width='80px'>
-         <el-form-item label="姓名"  prop='name'>
-            <el-input auto-complete="off"  v-model='editContact.name'></el-input>
-          </el-form-item>
-          <el-form-item label="QQ"  prop='qq'>
-            <el-input auto-complete="off"  v-model='editContact.qq'></el-input>
-          </el-form-item>
-          <el-form-item label="微信"  prop='wx'>
-            <el-input auto-complete="off"  v-model='editContact.wx'></el-input>
-          </el-form-item>
-          <el-form-item label="电话"  prop='tel'>
-            <el-input auto-complete="off"  v-model='editContact.tel'></el-input>
-          </el-form-item>
-           <el-form-item label="职务"  prop='type'>
-            <el-input auto-complete="off"  v-model='editContact.type'></el-input>
-          </el-form-item>
-           <div class="button-wrapper">
-            <el-form-item>
-              <el-button type="primary" @click="editContactItem">确定</el-button>
-            </el-form-item>
-          </div>
-      </el-form>
-    </el-dialog>
+    :editCustomer='selectRow'
+    :action='action'>
+    </addCustomer>
 
-    <!--add-->
-    <el-dialog title="新增" :visible.sync="showAddDialog" width='40%' >
-        <el-form :model="formData"  :rules='formRules' ref="addForm" label-width="80px">
-          <el-form-item label="客户名称"  prop='name'>
-            <el-input auto-complete="off"  v-model='formData.name'></el-input>
-          </el-form-item>
-          <el-form-item label="客户地址" prop='address'>
-          <el-input auto-complete="off" v-model='formData.address'></el-input>
-        </el-form-item>
-        <el-form-item label="客户简称" prop='shortName'>
-          <el-input auto-complete="off" v-model='formData.shortName'></el-input>
-        </el-form-item>
-        <!--<el-form-item label="客户编码" prop='person'>
-          <el-input auto-complete="off" v-model='formData.person'></el-input>
-        </el-form-item>-->
-        <el-form-item label="服务律师" prop='observer'>
-          <el-input auto-complete="off" v-model='formData.observer'></el-input>
-        </el-form-item>
-        <el-form-item label="到期时间"  prop='date'>
-          <el-date-picker
-            v-model="formData.date"
-            type="daterange"
-            placeholder="选择日期"
-            :picker-options="pickerOptions1">
-          </el-date-picker>
-        </el-form-item>
-          <div class="button-wrapper">
-            <el-form-item>
-              <el-button type="primary" @click="addItem">保存</el-button>
-              <el-button @click="resetForm('addForm')">重置</el-button>
-            </el-form-item>
-          </div>
-        </el-form>
-    </el-dialog>
 
-    <!--edit -->
-    <el-dialog title="编辑" :visible.sync="showEditDialog">
-        <el-form  label-width="80px" :model = 'selectRow'>
-          <el-form-item label="客户名称"  prop='name' >
-            <el-input auto-complete="off" v-model='selectRow.name'></el-input>
-          </el-form-item>
-          <el-form-item label="客户地址" prop='address'>
-          <el-input auto-complete="off" v-model='selectRow.address'></el-input>
-        </el-form-item>
-        <el-form-item label="客户简称" prop='shortName'>
-          <el-input auto-complete="off" v-model='selectRow.shortName'></el-input>
-        </el-form-item>
-        <!--<el-form-item label="客户编码" prop='person'>
-          <el-input auto-complete="off" v-model='selectRow.person' ></el-input>
-        </el-form-item>-->
-        <el-form-item label="服务律师" prop='observer'>
-          <el-input auto-complete="off" v-model='selectRow.observer' ></el-input>
-        </el-form-item>
-        <!--<el-form-item label="到期时间"  prop='date2'>
-          <el-date-picker
-            v-model="selectRow.date2"
-            type="date"
-            placeholder="选择日期"
-            :picker-options="pickerOptions0">
-          </el-date-picker>
-        </el-form-item>-->
-          <div class="button-wrapper">
-            <el-form-item>
-              <el-button type="primary" @click="saveItem">保存</el-button>
-              <!--<el-button @click="resetForm('addForm')">重置</el-button>-->
-            </el-form-item>
-          </div>
-        </el-form>
-    </el-dialog>
 
 
   </div>
@@ -186,66 +35,70 @@
 
 <script>
 // import modalBox from '../../common/component/modal'
-import {deepClone} from '../../common/js/util.js'
-import contact from './contact'
+import { deepClone } from '../../common/js/util.js'
+// import contact from './AddContact'
+import expandRow from './expand';
+import addCustomer from './addCustomer'
+
+
+const PAGE_SIZE = 10
 
 export default {
   name: 'client',
   created (){
     console.log('client created')
-    this.typeMap = ['danger', 'primary', 'success']
   },
   components: {
-    contact
+    // contact,
+    expandRow,
+    addCustomer
+  },
+  mounted() {
+    this.fetchData()
   },
   methods: {
-    addContactItem() {
-      // this.selectIndex
-      this.tableData[this.selectIndex].person.push(this.newContact)
-      this.isShowContactCard = ! this.isShowContactCard
+    fetchData() {
+       this.axios.get(this.Validate).then(
+        res => {
+          if (res.data.errcode !== '0') {
+            this.$message({
+              message: '登录失效, 请重新登录',
+              type: 'error'
+            })
+            this.$router.replace({path:'/login'})
+          } else {
+            return this.axios.post(this.api + 'Customer/load',{})
+          }
+        }
+      ).then(res => {
+        console.log(res.data)
+        this.tableData = res.data.resData.sort((a,b) => ~~(a.id) - ~~(b.id) )
+      })
     },
-    editContactItem() {
+    addCusCb (obj) {
+      this.fetchData()
+    },
 
-      /**
-       * ajax
-       */
-      this.isShowEditContactCard = !this.isShowEditContactCard
+    current(newVal, oldVal) {
+      console.log(newVal, oldVal)
+      // this.newVal
+      // this.$set(newVal, '_checked', true)
+      this.selectRow = newVal
     },
-    // rowClick() {
-    //   console.log(123);
-    // },
-    handleClose(item, index) {
-        this.$confirm('删除该联系人, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          item.splice(index, 1)
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });
-        });
-      console.log(item, index);
-      console.log('delete tag');
+
+    toggle() {
+      this.showAddDialog = !this.showAddDialog
     },
-    addContact(index1,data) {
-      console.log('addHandler')
-      console.log(index1,data)
-      this.isShowContactCard = ! this.isShowContactCard
-      this.selectIndex = index1
+    changePage(v) {
+      this.page = v
     },
     editContactHandle (index1, item, index2) {
       this.editContact = item
       this.isShowEditContactCard = !this.isShowEditContactCard
     },
     addHandler () {
-      this.showAddDialog = !this.showAddDialog
+      this.action = 'add'
+      this.toggle()
     },
     editHandler () {
       if (this.multipleSelection.length === 0 ){
@@ -256,51 +109,6 @@ export default {
 
         this.showEditDialog = !this.showEditDialog
       }
-    },
-    resetForm(formName) {
-        this.$refs[formName].resetFields();
-      },
-    saveItem() {
-        // ajax
-
-        /*
-        if (typeof this.selectRow.date === 'string') {
-          this.selectRow.date2 = new Date(this.selectRow.date2).toLocaleDateString()
-        } else {
-          this.selectRow.date2 = this.selectRow.date2.toLocaleDateString();
-        }
-        */
-        this.showEditDialog = false
-    },
-    renewItem() {
-        if (typeof this.selectRow.date2[1] === 'object'){
-          this.selectRow.date2[1] = this.selectRow.date2[1].toLocaleDateString()
-        }else if (typeof this.selectRow.date2[1] === 'string') {
-          this.selectRow.date2[1] = new Date(this.selectRow.date2[1]).toLocaleDateString()
-        } else {
-          this.selectRow.date2[1] = this.selectRow.date2[1].toLocaleDateString();
-        }
-        this.showRenewDialog = false
-    },
-    addItem() {
-      this.$refs['addForm'].validate((valid) => {
-        if (!valid) {
-          this.$alert('字段不能为空')
-        } else if (this.formData.date.length === 0) {
-          this.$alert('时间不能为空')
-        } else {
-          console.log('ok');
-          // this.$set(this.formData,'date2', this.date.toLocaleDateString() )
-          // this.tableData.push(deepClone(this.formData))
-          this.formData.date = Array.prototype.map.call(this.formData.date, i => i.toLocaleDateString())
-          this.tableData.push(Object.assign({}, this.formData))
-          this.formData.date = []
-          this.showAddDialog = false
-        }
-      })
-    },
-    handleSelectionChange(val){
-      this.multipleSelection = val
     },
     renewHandler() {
       if (this.multipleSelection.length === 0 ){
@@ -321,23 +129,54 @@ export default {
           i.status = false
         })
       }
+    },
+    _delCustomer (id) {
+      this.$confirm('删除该客户, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(()=>{
+        return this.axios(this.Validate)
+      }).then((res) => {
+        if (res.data.errcode !== '0') {
+            this.$message({
+              message: '登录失效, 请重新登录',
+              type: 'error'
+            })
+            // this.$router.replace({path:'login'})
+            this.$router.replace({name: 'login'})
+          } else {
+            return this.axios.get( this.api + 'Customer/remove', { params: { cusid: id}})
+        }
+      }).then(res => {
+        console.log(res)
+          this.$message({
+            type: 'info',
+            message: res.data.resData
+        });
+
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     }
   },
   computed: {
-    selectRow () {
-      return Object.assign({},
-      this.multipleSelection[0] || {}
-      )
+    showList () {
+      return this.tableData.slice( (this.page - 1) * PAGE_SIZE, this.page * PAGE_SIZE)
     }
+
   },
    data() {
       return {
-        date: '',
-        selectIndex: -1,
-        showRenewDialog: false,
-        isShowEditContactCard:false,
-        isShowContactCard: false,
-        multipleSelection: [],
+        page: 1,
+        selectRow: '',
+        action: '',
+        // date: '',
+
+        // multipleSelection: [],
         showAddDialog: false,
         showEditDialog: false,
         pickerOptions0 : {
@@ -346,89 +185,97 @@ export default {
           }
         },
         columns:[
+        // {
+        //   type: 'selection',
+        //   width: 60,
+        //   align: 'center'
+        // },
         {
-          type: 'selection',
+          type: 'index',
           width: 60,
           align: 'center'
         },
-
         {
-          title: '姓名',
-          key: 'name'
+            type: 'expand',
+            title: '联系人',
+            width: 50,
+            render: (h, params) => {
+                return h(expandRow, {
+                    props: {
+                        row: params.row
+                    },
+                    on: {}
+                })
+            }
         },
         {
-            title: '年龄',
-            key: 'age'
+          title: '姓名',
+          key: 'customName'
         },
         {
             title: '地址',
-            key: 'address'
-        }
-        ],
-        formRules: {
-          name:[{required: true,message: '不能为空',trigger: 'blur'}],
-          address: [{required: true,message: '不能为空',trigger: 'blur'}],
-          shortName: [{required: true,message: '不能为空',trigger: 'blur'}],
-          person: [{required: true,message: '不能为空',trigger: 'blur'}],
-          observer: [{required: true,message: '不能为空',trigger: 'blur'}],
-          // date: [{required: true,message: '不能为空',trigger: 'blur'}]
-        },
-        formData: {
-          name:'托尔斯泰',
-          address: 'America',
-          shortName: 'leifu',
-          person: [{show:false,type:'法务',name:'9527',qq:'123',tel:'',wx:'456'}],
-          observer: 'Jack Mao',
-          status: true,
-          date:[]
-         },
-         editContact: {},
-         newContact:{
-            name: '熊大',
-            type: '法务',
-            qq: '123456',
-            wx: 'wx122312',
-            tel: '54525451'
-         },
-        tableData: [
-          {
-          date: ['2016-5-1','2017-5-2'],
-          name: '常熟英迈',
-          person: [{show:false,type:'法务',name:'赵五',qq:'123',tel:'',wx:'456'},{show:false,type:'主管',name:'阿Q',qq:'',wx:'',tel:''}],
-          address: 'xxxxx',
-          observer:"李四",
-          status: true
+            key: 'customAddress'
         },
         {
-          date: ['2016-5-1','2017-5-4'],
-          name: '常熟英迈',
-          person: [{show:false,name:'李四',type:'联系人',qq:'',wx:'test',tel:'110'},{show:false,type:'法务',name:'赵五',qq:'123',tel:'',wx:'456'},{show:false,type:'主管',name:'阿Q',qq:'',wx:'',tel:''}],
-          address: 'xxxxx',
-          observer:"李四",
-          status: true
-        }, {
-          date: ['2016-5-1','2017-5-1'],
-          name: '常熟英迈',
-          person: [{show:false,type:'法务',name:'赵五',qq:'123',tel:'',wx:'456'},{show:false,type:'主管',name:'阿Q',qq:'',wx:'',tel:''}],
-          address: 'xxxxx',
-          observer:"李四",
-          status: true
-        }, {
-          date: ['2016-5-1','2017-5-3'],
-          name: '常熟英迈',
-          person: [{show:false,name:'李四',type:'联系人',qq:'',wx:'test',tel:'110'},{show:false,type:'法务',name:'赵五',qq:'123',tel:'',wx:'456'},{show:false,type:'主管',name:'阿Q',qq:'',wx:'',tel:''}],
-          address: 'xxxxx',
-          observer:"李四",
-          status: true
+            title: '简码',
+            key: 'customCode'
         },
-         {
-          date: ['2016-5-1','2017-5-3'],
-          name: '常熟英迈',
-          person: [{show:false,name:'李四',type:'联系人',qq:'',wx:'test',tel:'110'},{show:false,type:'法务',name:'赵五',qq:'123',tel:'',wx:'456'},{show:false,type:'主管',name:'阿Q',qq:'',wx:'',tel:''}],
-          address: 'xxxxx',
-          observer:"李四123",
-          status: false
-        }],
+        {
+          title: '状态',
+          key: 'serviceStatus',
+          // width: 100,
+          render: (h, params) => {
+            return h('div', {}, params.row.serviceStatus === '1' ? '有效': '无效')
+          }
+        },
+        {
+          title: '律师',
+          key: 'serviceLawyer',
+        },
+        {
+          title: '修改时间',
+          width: '150',
+          key: 'modifyDate',
+          render: (h, params) => {
+            return h('div', {}, new Date(params.row.modifyDate).toLocaleDateString())
+          }
+        },
+        {
+          title: '操作',
+           render: (h, params) => {
+              return h('div', [
+                h('Button', {
+                  props: {
+                    type: 'default',
+                    size: 'small'
+                  },
+                  style: {marginRight: '5px'},
+                  on: {
+                    click: ()=> {
+                      this.action = 'edit'
+                      this.toggle()
+                      console.log(12333333333)
+                    }
+                  }
+                }, '编辑'),
+                h('Button', {
+                  props: {
+                    type: 'warning',
+                    size: 'small'
+                  },
+                  style: {marginRight: '5px'},
+                  on: {
+                    click: ()=> {
+                      this._delCustomer(params.row.id)
+                      //console.log(params.row.id)
+                    }
+                  }
+                }, '删除')
+              ])
+            }
+        }
+        ],
+        tableData: [],
          pickerOptions1: {
           shortcuts: [{
             text: '最近一年',

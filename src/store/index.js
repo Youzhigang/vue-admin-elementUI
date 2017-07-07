@@ -7,11 +7,12 @@ Vue.use(Vuex);
 
 export const USER_LOGIN = 'USER_LOGIN' //登录成功
 export const USER_LOGINOUT = 'USER_LOGINOUT' //退出登录
-
+export const SET_USERINFO = 'SET_USERINFO'
 
 export const store = new Vuex.Store({
   state: {
     user: JSON.parse(window.sessionStorage.getItem('user')) || {},
+    userinfo: {},
     options: [],
     activeRoute: {},
     TokenID: ''
@@ -25,6 +26,11 @@ export const store = new Vuex.Store({
     }
   },
   mutations: {
+    SET_USERINFO: (state, payload) => {
+      console.log(456,payload)
+      state.userinfo = payload['userinfo']
+    },
+
     /*login*/
     USER_LOGIN: (state, payload) => {
       state.user = payload['user']
@@ -66,6 +72,9 @@ export const store = new Vuex.Store({
     },
     USER_LOGINOUT: ({commit}) => {
       commit(USER_LOGINOUT)
+    },
+    SET_USERINFO: ({commit}, userinfo) => {
+      commit(SET_USERINFO, userinfo)
     },
     AddOption: ({commit}, route) => {
       commit('AddOption', route)

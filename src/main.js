@@ -4,27 +4,46 @@ import Vue from 'vue'
 import App from './App'
 import routes from './router'
 import axios from 'axios'
-import ElementUI from 'element-ui'
+
 import { store } from './store/index'
 import VueRouter from 'vue-router'
 import 'element-ui/lib/theme-default/index.css'
 import Cookies from 'js-cookie'
 import iview from 'iview'
-
+import qs from 'qs'
 // import _ from 'lodash'
 import $ from 'jquery'
 import { BasePath,ValidateApi } from './api'
+import { Row, Col, Icon, Button, Form, Notification ,Badge, FormItem, Menu, Submenu,MenuItem, Input,} from 'element-ui'
+// import ElementUI from 'element-ui'
+import {Loading, Message, MessageBox} from 'element-ui'
 
 Vue.config.productionTip = false
 Vue.prototype.axios = Vue.prototype.axios || axios
 Vue.prototype.cookies = Vue.prototype.cookies || Cookies
 Vue.prototype.api = BasePath
 Vue.prototype.Validate = ValidateApi
+Vue.config.silent = true
+// Vue.use(ElementUI)
+Vue.use(Button)
+Vue.use(Form)
+Vue.use(FormItem)
+Vue.use(Menu)
+Vue.use(Submenu)
+Vue.use(MenuItem)
+Vue.use(Input)
+Vue.use(Col)
+Vue.use(Row)
+Vue.use(Icon)
+Vue.use(Badge)
 
-Vue.use(ElementUI)
 Vue.use(iview)
 Vue.use(VueRouter)
 
+
+Vue.prototype.$confirm = MessageBox.confirm
+Vue.prototype.$notify = Notification
+Vue.prototype.$alert = MessageBox.alert
 
 const router = new VueRouter({
   routes: routes,
@@ -71,7 +90,8 @@ new Vue({
   components: { App }
 })
 
-import {Loading, Message} from 'element-ui'
+
+Vue.prototype.$message = Message
 var loadinginstace
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 // 请求的拦截器
@@ -83,7 +103,7 @@ axios.interceptors.request.use(function (config) {
     //     console.log(res)
     //   }
     // )
-    //loadinginstace = Loading.service({ fullscreen: true })
+    loadinginstace = Loading.service({ fullscreen: true })
     console.log('TokenID=',TokenID)
      // 判断请求的类型
      // 如果是post请求就把默认参数拼到data里面
@@ -92,10 +112,10 @@ axios.interceptors.request.use(function (config) {
     if(config.method === 'post') {
         config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
         console.log(config.data)
-        config.data = {
+        config.data = qs.stringify( {
             TokenID: TokenID,
             ...config.data
-        }
+        })
 
     } else if(config.method === 'get') {
 
@@ -103,15 +123,15 @@ axios.interceptors.request.use(function (config) {
             TokenID:TokenID,
             ...config.params
         }
-
+        console.log('get',config.params)
     }
     return config;
   }, function (error) {
-    //loadinginstace.close()
+    loadinginstace.close()
     return Promise.reject(error);
   })
 
-/*
+
 axios.interceptors.response.use(data => {// 响应成功关闭loading
   loadinginstace.close()
   return data
@@ -122,4 +142,4 @@ axios.interceptors.response.use(data => {// 响应成功关闭loading
   })
   return Promise.reject(error)
 })
-*/
+
