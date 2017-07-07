@@ -65,11 +65,11 @@
     name: 'home',
     mounted() {
     // console.log(this.$router)
-    this.axios(this.Validate).then(
+    this.axios.get(this.Validate).then(
       res => {
         if (res.data.errcode !== '0') {
               this.$message({
-                message: '登录失效, 请重新登录',
+                message: '登录失效123, 请重新登录',
                 type: 'error'
               })
               // this.$router.replace({path:'login'})

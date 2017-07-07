@@ -36,6 +36,7 @@ export const store = new Vuex.Store({
       state.user = payload['user']
       window.sessionStorage.setItem('user', JSON.stringify(payload['user']))
       state.TokenID = payload['tokenid']
+      window.sessionStorage.setItem('UserTokenID', payload['tokenid'])
       Cookies.set('UserTokenID',  payload['tokenid'], { expires: 1/24 })
     },
     USER_LOGINOUT: (state, user) => {

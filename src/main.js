@@ -5,6 +5,7 @@ import App from './App'
 import routes from './router'
 import axios from 'axios'
 
+
 import { store } from './store/index'
 import VueRouter from 'vue-router'
 import 'element-ui/lib/theme-default/index.css'
@@ -96,7 +97,7 @@ var loadinginstace
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 // 请求的拦截器
 axios.interceptors.request.use(function (config) {
-    let TokenID = Cookies.get('UserTokenID')
+    let TokenID = Cookies.get('UserTokenID') || window.sessionStorage.getItem('UserTokenID')
 
     // axios.get('VALIDATE_API' + TokenID).then(
     //   res => {
