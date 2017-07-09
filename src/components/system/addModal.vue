@@ -83,6 +83,7 @@ export default {
     toggle() {
       this.$emit('toggle')
     },
+    // add User
     handleSubmit1(name) {
       console.log(name)
       this.$refs[name].validate((valid) => {

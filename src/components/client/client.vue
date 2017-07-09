@@ -14,7 +14,7 @@
         <Table  highlight-row border :columns="columns" :data="showList"  @on-current-change='current' ></Table>
     </div>
     <div class="page-footer">
-        <Page :total="tableData.length" @on-change='changePage'></Page>
+        <Page :total="tableData.length" @on-change='changePage' show-total></Page>
     </div>
 
     <addCustomer

@@ -8,20 +8,21 @@ import axios from 'axios'
 
 import { store } from './store/index'
 import VueRouter from 'vue-router'
-import 'element-ui/lib/theme-default/index.css'
+
 import Cookies from 'js-cookie'
 import iview from 'iview'
 import qs from 'qs'
 // import _ from 'lodash'
 import $ from 'jquery'
 import { BasePath,ValidateApi } from './api'
-import { Row, Col, Icon, Button, Form, Notification ,Badge, FormItem, Menu, Submenu,MenuItem, Input,} from 'element-ui'
+import { Row, Col, Icon, Button, Form, Notification ,Badge, FormItem, Menu, Submenu,
+  MenuItem, Input, Radio, RadioGroup,} from 'element-ui'
 // import ElementUI from 'element-ui'
 import {Loading, Message, MessageBox} from 'element-ui'
 
 Vue.config.productionTip = false
 Vue.prototype.axios = Vue.prototype.axios || axios
-Vue.prototype.cookies = Vue.prototype.cookies || Cookies
+// Vue.prototype.cookies = Vue.prototype.cookies || Cookies
 Vue.prototype.api = BasePath
 Vue.prototype.Validate = ValidateApi
 Vue.config.silent = true
@@ -37,6 +38,8 @@ Vue.use(Col)
 Vue.use(Row)
 Vue.use(Icon)
 Vue.use(Badge)
+Vue.use(Radio)
+Vue.use(RadioGroup)
 
 Vue.use(iview)
 Vue.use(VueRouter)
@@ -133,8 +136,11 @@ axios.interceptors.request.use(function (config) {
   })
 
 
-axios.interceptors.response.use(data => {// 响应成功关闭loading
-  loadinginstace.close()
+axios.interceptors.response.use(data => {
+  // 响应成功关闭loading
+  setTimeout(()=>{
+    loadinginstace.close()
+  }, 300)
   return data
 }, error => {
   loadinginstace.close()

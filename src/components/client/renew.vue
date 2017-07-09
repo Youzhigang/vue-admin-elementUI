@@ -17,46 +17,28 @@
       </div>
       <div class="service">
         <h2>服务详情</h2>
+        <Table :columns="columnsService" :data="serviceData"></Table>
       </div>
     </div>
 
     <div class="page-footer">
-      <Page :total="tableData.length" @on-change='changePage'></Page>
+      <Page :total="tableData.length" @on-change='changePage' show-total></Page>
     </div>
-
+    <addRenew v-if="showRenewDialog" :selectRow='currentRow' @toggle='toggle'></addRenew>
   </div>
 
 </template>
 
 <script>
-// beginDate
-// :
-// "2017-06-27T00:00:00"
-// createDate
-// :
-// "2017-07-04T13:56:25"
-// createUser
-// :
-// "admin"
-// cusID
-// :
-// "1"
-// endDate
-// :
-// "2017-07-13T00:00:00"
-// id
-// :
-// "1"
-// serviceMoney
-// :
-// 123
-// serviceType
-// :
-// "1"
+  import addRenew from './addRenew.vue'
+
   const PAGE_SIZE = 10
 
   export default {
     name: 'renew',
+    components: {
+      addRenew
+    },
     created(){
       console.log('created!!!!!!!!!!!')
     },
@@ -89,6 +71,10 @@
       }
     },
     methods: {
+      toggle(){
+        this.showRenewDialog = !this.showRenewDialog
+      },
+
       selectChange(){
 
       },
@@ -96,6 +82,10 @@
         this.page = v
       },
       current(newVal, oldVal){
+        this.currentRow = newVal
+        this.fetchServiceByRow(this.currentRow)
+      },
+      fetchServiceByRow(row){
         this.axios.get(this.Validate).then(res => {
           if (res.data.errcode !== '0') {
               this.$message({message: '登录失效, 请重新登录', type: 'error' })
@@ -103,11 +93,12 @@
           } else {
             return this.axios.post(this.api + "Customer/loadservice",
             {
-              cusid: newVal.id
+              cusid: row.id
             })
           }
         }).then(res => {
-          console.log(res)
+          // console.log(res)
+          this.serviceData = res.data.resData
         })
         .catch(err => {
           this.$message({message: '获取失败', type: 'error' })
@@ -132,9 +123,7 @@
           this.tableData = res.data.resData.sort((a,b) => ~~(a.id) - ~~(b.id) )
         })
       },
-      handleCurrentChange(val) {
-        this.currentRow = val;
-      },
+
       handleIconClick () {
 
       },
@@ -144,9 +133,9 @@
         if (Object.keys(this.currentRow).length === 0) {
           this.$alert('没有选择行', '警告')
         } else {
-          this.showRenewDialog = !this.showRenewDialog
-          this.$set(this.currentRow, 'date2', this.currentRow.period[0])
-          // this.currentRow.date2 = this.currentRow.period[0]
+          this.toggle()
+
+
         }
 
       },
@@ -159,57 +148,95 @@
     },
     data() {
       return {
+        columnsService: [
+          {
+            title: '开始时间', key: 'beginDate',
+            render: (h, params) => {
+              return h('div', {}, new Date(params.row.beginDate).toLocaleDateString())
+            }
+          },
+          {
+            title: '结束时间', key: 'endDate',
+            render: (h, params) => {
+              return h('div', {}, new Date(params.row.endDate).toLocaleDateString())
+            }
+          },
+          {
+            title: '支付金额/￥', key: 'serviceMoney'
+          },
+          {
+            title: '服务类型', key: 'serviceType',width:150,
+            render: (h, params) => {
+              switch (params.row.serviceType) {
+                case '1':
+                  return h('Tag', {props:{color: 'blue'}} , '律师咨询')
+                    break
+                case '2':
+                  return h('Tag', {props:{color: 'green'}} , '云服务')
+                    break
+                case '3':
+                    return h('Tag', {props:{color: 'yellow'}} , '律师咨询/云服务')
+                    // h('div', [
+                    //   h('Tag', {props:{color: 'blue'}} , '律师咨询'),
+                    //   h('Tag', {props:{color: 'green'}} , '云服务')
+                    // ])
+                    break
+                default:
+                  break
+              }
+            }
+          }
+
+        ],
         page: 1,
         kw: '',
         options: ['云服务','律师咨询'],
         showRenewDialog:false,
         currentRow: {},
-        getRowKeys(row) {
-          return row.id
-        },
         expands: [],
         tableData: [],
+        serviceData: [],
         columns:[
         // {
         //   type: 'selection',
         //   width: 60,
         //   align: 'center'
         // },
-        {
-          type: 'index',
-          width: 60,
-          align: 'center'
-        },
+          {
+            type: 'index',
+            width: 60,
+            align: 'center'
+          },
 
-        {
-          title: '姓名',
-          key: 'customName'
-        },
-        {
-            title: '地址',
-            key: 'customAddress'
-        },
+          {
+            title: '姓名',
+            key: 'customName'
+          },
+          {
+              title: '地址',
+              key: 'customAddress'
+          },
 
-        {
-          title: '状态',
-          key: 'serviceStatus',
-          // width: 100,
-          render: (h, params) => {
-            return h('div', {}, params.row.serviceStatus === '1' ? '有效': '无效')
+          {
+            title: '状态',
+            key: 'serviceStatus',
+            // width: 100,
+            render: (h, params) => {
+              return h('div', {}, params.row.serviceStatus === '1' ? '有效': '无效')
+            }
+          },
+          {
+            title: '律师',
+            key: 'serviceLawyer',
+          },
+          {
+            title: '修改时间',
+            width: '150',
+            key: 'modifyDate',
+            render: (h, params) => {
+              return h('div', {}, new Date(params.row.modifyDate).toLocaleDateString())
+            }
           }
-        },
-        {
-          title: '律师',
-          key: 'serviceLawyer',
-        },
-        {
-          title: '修改时间',
-          width: '150',
-          key: 'modifyDate',
-          render: (h, params) => {
-            return h('div', {}, new Date(params.row.modifyDate).toLocaleDateString())
-          }
-        }
 
 
         ],

@@ -13,7 +13,7 @@
       <Table :data='showList' :columns='columns'></Table>
     </div>
     <div class="page-footer">
-       <Page :total="tableData3.length" @on-change='changePage'></Page>
+       <Page :total="tableData3.length" @on-change='changePage' show-total></Page>
     </div>
 
 

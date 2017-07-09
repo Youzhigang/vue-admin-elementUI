@@ -3,11 +3,16 @@
 
     <!--<div class="top">-->
     <div class="top">
-      <Radio-group v-model="radio" @on-change='changeHandler'>
+      <!--<Radio-group v-model="radio">
         <Radio :label="1" >已答复</Radio>
         <Radio :label="2">未答复</Radio>
         <Radio :label="3">所有</Radio>
-      </Radio-group>
+      </Radio-group>-->
+  <el-radio-group v-model="radio">
+    <el-radio :label="1">已答复</el-radio>
+    <el-radio :label="2">未答复</el-radio>
+    <el-radio :label="3">所有</el-radio>
+  </el-radio-group>
       <div class="search-wrapper">
         <el-input icon="search" :on-icon-click="handleIconClick" v-model='kw' placeholder='根据名称和描述搜索'></el-input>
       </div>

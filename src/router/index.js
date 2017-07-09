@@ -18,7 +18,7 @@ const routes =  [
           { path: 'client', name: '客户列表', component: Client,},
           { path: 'client/renew', name: '续费情况', component: require('../components/client/renew.vue')},
           { path: 'question', name: '问题列表', component: require('../components/question/question.vue')},
-          { path: 'service', name: '查看文档', component: require('../components/service/service.vue')},
+          { path: 'service', name: '查看文档', component: require('../components/document/document.vue')},
           { path: 'system', name: '系统设置', component: require('../components/system/system.vue')},
           { path: 'hello', name: 'hello', component: Hello },
         ]

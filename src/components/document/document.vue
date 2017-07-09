@@ -24,7 +24,7 @@
 
       </div>
       <div class="page-footer">
-          <!--<Page :total="tableData.length" @on-change='changePage'></Page>-->
+          <!--<Page :total="tableData.length" @on-change='changePage' show-total></Page>-->
       </div>
     </div>
     <!--edit-->
@@ -86,15 +86,35 @@
 
 
   export default {
-    name: 'service',
+    name: 'document',
     components: {
       upModal
     },
     mounted() {
       console.log(new Date)
+      this.fetchDocList()
       // this.axios.get(this.api + 'User/get').then(res => console.log(res))
     },
     methods: {
+      fetchDocList(){
+        // this.axios.get()
+         this.axios.get(this.Validate).then( res => {
+            if (res.data.errcode !== '0') {
+                this.$message({
+                  message: '登录失效, 请重新登录',
+                  type: 'error'
+                })
+                this.$router.replace({name: 'login'})
+            } else {
+              return this.axios.post(this.api + 'Document/loadList', {})
+            }
+         }).then(
+          res => {
+            console.log(res)
+          }
+        )
+      },
+
       toggle(){
         console.log(123)
         this.showAddDialog = !this.showAddDialog
